@@ -1,6 +1,14 @@
 # Add the executable
-add_executable(${PROJECT_NAME} main.cpp game_system.cpp ship.cpp invader.cpp
-                               player.cpp bullet.cpp)
+add_executable(
+  ${PROJECT_NAME}
+  main.cpp
+  game_system.cpp
+  ship.cpp
+  invader.cpp
+  player.cpp
+  bullet.cpp
+  interfaces/movable.cpp
+  interfaces/positionable.cpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE lib/SFML/include
                                                    lib/box2d/include)
