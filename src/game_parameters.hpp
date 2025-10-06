@@ -1,0 +1,17 @@
+#pragma once
+
+struct GameParameters {
+  constexpr static int game_width = 800;
+  constexpr static int game_height = 600;
+
+  constexpr static int sprite_size = 32;
+  constexpr static int sprite_gap = 10;
+  constexpr static int total_sprite_size = sprite_size + sprite_gap;
+  
+  constexpr static int invader_columns = (game_width/(sprite_size+sprite_gap)) - 2;
+  constexpr static int invader_rows = 5;
+  static_assert(game_height/(sprite_size + sprite_gap) >= invader_rows);
+
+  constexpr static float bullet_speed = 200.f;
+};
+
