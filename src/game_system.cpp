@@ -91,11 +91,9 @@ void GameSystem::update(const float dt) {
 }
 
 void GameSystem::render(sf::RenderWindow& window) {  
-  printf("dick");
   for (auto& ship : ships) {
     window.draw(ship->get_sprite());
   }
-  printf("pussy");
   for (auto& bullet : bullets) {
     window.draw(bullet->get_sprite());
   }
