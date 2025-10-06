@@ -2,10 +2,7 @@
 add_executable(${PROJECT_NAME} main.cpp game_system.cpp ship.cpp invader.cpp
                                player.cpp bullet.cpp)
 
-# Make the 'include' directory accessible
-target_include_directories(${PROJECT_NAME}
-                           PRIVATE ${PROJECT_SOURCE_DIR}/include)
-
+target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_INCS})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
 
 add_custom_command(
