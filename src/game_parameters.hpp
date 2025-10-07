@@ -4,6 +4,8 @@ struct GameParameters {
   constexpr static int game_width = 800;
   constexpr static int game_height = 600;
 
+  constexpr static int max_ray_collisions = 10;
+
   constexpr static int sprite_size = 32;
   constexpr static int sprite_gap = 10;
   constexpr static int total_sprite_size = sprite_size + sprite_gap;
