@@ -10,8 +10,8 @@ add_executable(
   interfaces/movable.cpp
   interfaces/positionable.cpp)
 
-target_include_directories(${PROJECT_NAME} PRIVATE lib/SFML/include
-                                                   lib/box2d/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+                                                   lib/SFML/include)
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
 
 # Windows Only
