@@ -12,8 +12,5 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 # Add SFML
 add_subdirectory(lib/SFML)
 
-# Add Box2d
-add_subdirectory(lib/box2d)
-
 # Source directories
 add_subdirectory(src)
