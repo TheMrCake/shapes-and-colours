@@ -4,7 +4,7 @@
 #include "SFML/System/Vector2.hpp"
 
 // Local includes 
-#include "positionable.hpp"
+#include "interfaces/positionable.hpp"
 
 class Movable : public Positionable {
 public:
