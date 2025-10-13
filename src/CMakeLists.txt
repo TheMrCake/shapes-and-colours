@@ -8,9 +8,11 @@ add_executable(
   player.cpp
   bullet.cpp
   interfaces/movable.cpp
-  interfaces/positionable.cpp)
+  interfaces/positionable.cpp
+  game_objects/light_ray.cpp)
 
-target_include_directories(${PROJECT_NAME} PRIVATE lib/SFML/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
+                                                   lib/SFML/include)
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
 
 # Windows Only
