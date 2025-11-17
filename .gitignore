@@ -37,4 +37,3 @@
 
 build/*
 .cache/
-lib/box2d/
