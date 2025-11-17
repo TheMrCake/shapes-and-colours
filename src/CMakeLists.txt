@@ -12,9 +12,11 @@ add_executable(
   utils/color_utils.cpp
   game_objects/light_ray.cpp)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-                                                   lib/SFML/include)
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
+target_include_directories(
+  ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} lib/SFML/include
+                          lib/box2d/include)
+target_link_libraries(${PROJECT_NAME} box2d sfml-graphics sfml-window
+                      sfml-system)
 
 # Windows Only
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
