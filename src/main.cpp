@@ -5,7 +5,7 @@
 
 int main() {
   // Create window
-  sf::RenderWindow window(sf::VideoMode({GameParameters::game_width, GameParameters::game_height}), "SPACE INVADERS :O");
+  sf::RenderWindow window(sf::VideoMode({GameParameters::game_width, GameParameters::game_height}), "Shapes and Colours");
   GameSystem game_system{};
   game_system.init();
 
