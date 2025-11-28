@@ -44,7 +44,7 @@ public:
   // Return all components of a specific type
   template<typename ComponentType>
   ComponentMap<ComponentType>& get_component_map() {
-    return static_cast<ComponentPool<ComponentType>>(*this).components;
+    return static_cast<ComponentPool<ComponentType>*>(this)->components;
   }
 
   template<typename ComponentType>
