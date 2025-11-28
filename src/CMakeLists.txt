@@ -3,7 +3,8 @@ add_executable(
   ${PROJECT_NAME}
   main.cpp
   game_system.cpp
-  utils/color_utils.cpp
+  managers/entity_manager.cpp
+  utils/color_utils.cpp)
 
 target_include_directories(
   ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} lib/SFML/include
