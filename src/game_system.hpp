@@ -1,9 +1,13 @@
 #pragma once
 
+// SFML includes
 #include "SFML/Graphics/RenderWindow.hpp"
 
+// Local includes
+#include "managers/entity_manager.hpp"
 class GameSystem {
 public:
+  GameSystem();
   void init();
 
   void update(const float dt);
@@ -11,4 +15,5 @@ public:
   void render(sf::RenderWindow& window);
 
 private:
+  EntityManager entity_manager;
 };
