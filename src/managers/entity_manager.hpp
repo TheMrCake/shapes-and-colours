@@ -35,6 +35,11 @@ struct ComponentStorage : ComponentPool<Components>... {};
 
 // When making new components also put their name here in alphabetical order
 using AllComponentStorages = ComponentStorage<
+  Collision,
+  Light,
+  Shape,
+  Sprite,
+  Transform
 >;
 
 class EntityManager : AllComponentStorages {

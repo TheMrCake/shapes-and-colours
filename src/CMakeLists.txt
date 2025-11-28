@@ -3,6 +3,8 @@ add_executable(
   ${PROJECT_NAME}
   main.cpp
   game_system.cpp
+  game_objects/components/shape_component.cpp
+  game_objects/components/sprite_component.cpp
   managers/entity_manager.cpp
   managers/physics_manager.cpp
   utils/color_utils.cpp)
