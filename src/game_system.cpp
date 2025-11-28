@@ -2,25 +2,20 @@
 
 // STD includes
 #include <cstdio>
-#include <iostream>
 #include <memory>
-#include <vector>
 
-// SFML includes
-#include "SFML/Graphics/Sprite.hpp"
-#include "SFML/System/Vector2.hpp"
-
-
+#include "managers/entity_manager.hpp"
+#include "managers/physics_manager.hpp"
 
 GameSystem::GameSystem()
   : entity_manager()
+  , physics_manager(entity_manager)
   {}
 
 void GameSystem::init() {
 }
 
 void GameSystem::update(const float dt) {
-
 
 }
 
