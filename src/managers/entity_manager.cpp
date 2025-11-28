@@ -8,3 +8,13 @@ EntityManager::EntityManager()
   : next_id(0)
   , entities()
 {}
+
+
+
+EntityMap& EntityManager::get_entities() {
+  return entities;
+}
+
+const EntityMap& EntityManager::get_entities_const() {
+  return get_entities();  
+}
