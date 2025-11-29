@@ -3,16 +3,17 @@ add_executable(
   ${PROJECT_NAME}
   main.cpp
   game_system.cpp
-  ship.cpp
-  invader.cpp
-  player.cpp
-  bullet.cpp
-  interfaces/movable.cpp
-  interfaces/positionable.cpp)
+  game_objects/components/shape_component.cpp
+  game_objects/components/sprite_component.cpp
+  managers/entity_manager.cpp
+  managers/physics_manager.cpp
+  utils/color_utils.cpp)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
-                                                   lib/SFML/include)
-target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)
+target_include_directories(
+  ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} lib/SFML/include
+                          lib/box2d/include)
+target_link_libraries(${PROJECT_NAME} box2d sfml-graphics sfml-window
+                      sfml-system)
 
 # Windows Only
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
