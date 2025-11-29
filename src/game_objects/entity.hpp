@@ -44,13 +44,12 @@ template<typename... Components>
 class Entity 
 {
 public:
-  template<typename T = void>
   static constexpr bool all_components = 
     is_component_v<Components...>;
 
   Entity() {
     static_assert(
-      all_components<void>,
+      all_components,
       "Entity requires all template parameters to be valid Components."
     );
   };
