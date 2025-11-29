@@ -15,6 +15,7 @@
 #include "game_objects/light_ray.hpp"
 
 using EntityVariant = std::variant<
+  LightRay
 >;
 
 using EntityVariantPtr = std::unique_ptr<EntityVariant>;
