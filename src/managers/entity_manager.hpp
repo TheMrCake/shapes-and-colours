@@ -12,7 +12,7 @@
 #include "game_objects/components/sprite_component.hpp"
 #include "game_objects/components/transform_component.hpp"
 #include "game_objects/entity.hpp"
-#include "game_objects/light_ray.hpp"
+#include "game_objects/entities.hpp"
 
 using EntityVariant = std::variant<
   LightRay
