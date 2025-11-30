@@ -6,10 +6,19 @@
 #include <type_traits>
 
 using EntityId = uint16_t;
+constexpr EntityId INVALID_ENTITY_ID = -1;
 
 template <typename Derived>
 class Component {
 public:
+  Component()
+    : entity_id(INVALID_ENTITY_ID)
+    {}
+
+  Component(EntityId entity_id)
+    : entity_id(entity_id)
+    {}
+
   ~Component() = default;
 
   void update(const float delta_time) {
@@ -17,11 +26,13 @@ public:
   }
 
 protected:
-  EntityId* element_id;
+  const EntityId entity_id;
 
 private:
   void update_impl(const float delta_time) { /* Implement in Derived classes */ }; 
 };
+
+
 
 template<typename T>
 struct is_component {
@@ -32,6 +43,9 @@ template<typename T>
 constexpr bool is_component_v = is_component<T>::value;
 
 
+
+
+
 // Check if any of the parameter pack matches T
 template<typename T, typename... Args>
 using matches_any = std::disjunction<std::is_same<T, Args>...>;
@@ -40,33 +54,38 @@ template<typename T, typename... Args>
 constexpr bool matches_any_v = matches_any<T, Args...>::value;
 
 
+
+
+
 template<typename... Components>
 class Entity 
 {
 public:
-  static constexpr bool all_components = 
-    is_component_v<Components...>;
+  static constexpr bool all_components_v = std::conjunction_v<is_component<Components>...>;
+  using component_types = std::tuple<Components...>;
 
-  Entity() {
+  Entity(EntityId id)
+    : id(id)
+    {
     static_assert(
-      all_components,
+      all_components_v,
       "Entity requires all template parameters to be valid Components."
     );
   };
 
-  template<typename ComponentType, typename = std::enable_if<matches_any_v<ComponentType, Components...>>>
-  ComponentType& get_component() {
-    return std::get<ComponentType>(components);
-  }
-
-  void update_components(const float delta_time) {
-    for (auto&& component : components) {
-      component->update(delta_time);
-    }
-  }
-
 private:
   EntityId id;
-
-  std::tuple<Components...> components;
 };
+
+// Found from https://indii.org/blog/is-type-instantiation-of-template/
+// It determines if T is an instance of the type U, which we can use to
+// determine if a type is a template instance of an entity.
+template<typename T, template<typename...> typename U>
+constexpr bool is_instance_of_v = std::false_type{};
+
+template<template<typename...> typename U, typename... Vs>
+constexpr bool is_instance_of_v<U<Vs...>,U> = std::true_type{};
+
+template<typename T>
+constexpr bool is_entity_v = is_instance_of_v<T, Entity>;
+
