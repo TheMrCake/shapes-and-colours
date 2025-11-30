@@ -5,6 +5,7 @@ add_executable(
   game_system.cpp
   # Components
   game_objects/components/collision_component.cpp
+  game_objects/components/input_component.cpp
   game_objects/components/light_component.cpp
   game_objects/components/shape_component.cpp
   game_objects/components/sprite_component.cpp
