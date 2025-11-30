@@ -13,14 +13,15 @@ class Light : Component<Light> {
 public:
   Light();
   Light(EntityId entity_id);
-  
-  void update_impl(const float delta_time) { /* Implement in Derived classes */ }; 
+
   const sf::Color get_color();
   const float& get_wavelength_as_nm();
 
   const int& get_remaining_collisions();
 
 private:
+  void update_impl(const float delta_time); 
+
   constexpr static int max_collisions = GameParameters::max_ray_collisions;
   constexpr static float max_length = GameParameters::max_ray_length;
 

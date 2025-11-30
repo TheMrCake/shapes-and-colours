@@ -12,7 +12,7 @@ public:
   const sf::Sprite& get_sprite_const();
 
 private:
-  void update_impl(const float delta_time) { /* Implement in Derived classes */ }; 
+  void update_impl(const float delta_time); 
 
   sf::Sprite sprite;
 };

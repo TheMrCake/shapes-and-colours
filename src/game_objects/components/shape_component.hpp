@@ -16,7 +16,7 @@ public:
   const std::unique_ptr<sf::Shape>& get_shape_const();
 
 private:
-  void update_impl(const float delta_time) { /* Implement in Derived classes */ }; 
+  void update_impl(const float delta_time); 
 
   std::unique_ptr<sf::Shape> shape;
 };

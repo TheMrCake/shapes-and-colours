@@ -12,5 +12,5 @@ public:
   Collision(EntityId entity_id);
   
 private:
-  void update_impl(const float delta_time) { /* Implement in Derived classes */ }; 
+  void update_impl(const float delta_time); 
 };

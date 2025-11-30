@@ -14,3 +14,7 @@ Light::Light(EntityId entity_id)
   , wavelength()
   , remaining_collisions()
   {}
+
+void Light::update_impl(const float delta_time) {
+  
+}

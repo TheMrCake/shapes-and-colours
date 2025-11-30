@@ -7,3 +7,10 @@ std::unique_ptr<sf::Shape>& Shape::get_shape() {
 const std::unique_ptr<sf::Shape>& Shape::get_shape_const() {
   return get_shape();
 }
+
+
+
+void Shape::update_impl(const float delta_time) {
+  
+} 
+
