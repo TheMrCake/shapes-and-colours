@@ -12,6 +12,7 @@ class Light : Component<Light> {
   friend Component<Light>;
 public:
   Light();
+  Light(EntityId entity_id);
   
   void update_impl(const float delta_time) { /* Implement in Derived classes */ }; 
   const sf::Color get_color();

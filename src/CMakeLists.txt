@@ -3,10 +3,16 @@ add_executable(
   ${PROJECT_NAME}
   main.cpp
   game_system.cpp
+  # Components
+  game_objects/components/collision_component.cpp
+  game_objects/components/light_component.cpp
   game_objects/components/shape_component.cpp
   game_objects/components/sprite_component.cpp
+  game_objects/components/transform_component.cpp
+  # Managers
   managers/entity_manager.cpp
   managers/physics_manager.cpp
+  # Utils
   utils/color_utils.cpp)
 
 target_include_directories(
