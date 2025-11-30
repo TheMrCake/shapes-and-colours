@@ -7,7 +7,8 @@ add_executable(
   game_objects/components/sprite_component.cpp
   managers/entity_manager.cpp
   managers/physics_manager.cpp
-  utils/color_utils.cpp)
+  utils/color_utils.cpp
+)
 
 target_include_directories(
   ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} lib/SFML/include

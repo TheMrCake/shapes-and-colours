@@ -2,6 +2,7 @@
 
 #include "game_parameters.hpp"
 #include "game_system.hpp"
+#include <SFML/Graphics.hpp>
 
 int main() {
   // Create window
@@ -33,3 +34,4 @@ int main() {
   return 0;
 }
 
+// sf::Color bg(20, 20, 20); // near-black
