@@ -9,6 +9,7 @@
 
 // Local includes
 #include "game_objects/components/collision_component.hpp"
+#include "game_objects/components/input_component.hpp"
 #include "game_objects/components/light_component.hpp"
 #include "game_objects/components/shape_component.hpp"
 #include "game_objects/components/sprite_component.hpp"
@@ -31,6 +32,7 @@ struct ComponentStorage : ComponentPool<Components>... {};
 // When making new components also put their name here in alphabetical order
 using AllComponentStorages = ComponentStorage<
   Collision,
+  Input,
   Light,
   Shape,
   Sprite,
