@@ -30,7 +30,7 @@ if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
     COMMAND
       ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:sfml-graphics>
       $<TARGET_FILE:sfml-window> $<TARGET_FILE:sfml-system>
-      $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+      $<TARGET_FILE:box2d> $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 endif()
 
 # Move Resource folder to executable folder
