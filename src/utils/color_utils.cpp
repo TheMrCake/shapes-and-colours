@@ -1,6 +1,7 @@
 #include "utils/color_utils.hpp"
 
 // STD include
+#include <algorithm>
 #include <cmath>
 
 // SFML includes
