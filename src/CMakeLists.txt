@@ -10,9 +10,10 @@ add_executable(
   game_objects/components/shape_component.cpp
   game_objects/components/sprite_component.cpp
   game_objects/components/transform_component.cpp
+  # Systems
+  systems/physics_system.cpp
   # Managers
   managers/entity_manager.cpp
-  managers/physics_manager.cpp
   # Utils
   utils/color_utils.cpp)
 

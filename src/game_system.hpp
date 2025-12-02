@@ -5,7 +5,7 @@
 
 // Local includes
 #include "managers/entity_manager.hpp"
-#include "managers/physics_manager.hpp"
+#include "systems/physics_system.hpp"
 
 class GameSystem {
 public:
@@ -19,5 +19,5 @@ public:
 
 private:
   EntityManager entity_manager;
-  PhysicsManager physics_manager;
+  PhysicsSystem physics_system;
 };

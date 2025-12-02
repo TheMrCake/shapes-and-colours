@@ -1,4 +1,4 @@
-#include "managers/physics_manager.hpp"
+#include "systems/physics_system.hpp"
 
 // Box2D includes
 #include "box2d/box2d.h"
@@ -8,7 +8,7 @@
 // Local includes
 #include "managers/entity_manager.hpp"
 
-PhysicsManager::PhysicsManager(EntityManager& entity_manager)
+PhysicsSystem::PhysicsSystem(EntityManager& entity_manager)
   : world_id()
   , entity_manager(entity_manager)
   {

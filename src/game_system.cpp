@@ -7,15 +7,17 @@
 // Local includes
 #include "game_objects/components/shape_component.hpp"
 #include "game_objects/components/sprite_component.hpp"
+#include "game_objects/entities.hpp"
 #include "managers/entity_manager.hpp"
-#include "managers/physics_manager.hpp"
+#include "systems/physics_system.hpp"
 
 GameSystem::GameSystem()
   : entity_manager()
-  , physics_manager(entity_manager)
+  , physics_system(entity_manager)
   {}
 
 void GameSystem::init() {
+  entity_manager.make_entity<LightRay>();
 }
 
 void GameSystem::update(const float dt) {

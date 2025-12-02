@@ -8,9 +8,9 @@
 
 
 
-class PhysicsManager {
+class PhysicsSystem {
 public:
-  PhysicsManager(EntityManager& entity_manager);
+  PhysicsSystem(EntityManager& entity_manager);
 
 private:
   b2WorldId world_id;
