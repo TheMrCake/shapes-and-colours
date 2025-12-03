@@ -2,9 +2,11 @@
 
 // SFML includes
 #include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/Event.hpp"
 
 // Local includes
 #include "managers/entity_manager.hpp"
+#include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
 
 class GameSystem {
@@ -17,7 +19,13 @@ public:
 
   void render(sf::RenderWindow& window);
 
+  void handle_event(sf::Event event);
+
 private:
   EntityManager entity_manager;
+
   PhysicsSystem physics_system;
+  InputSystem input_system;
+
+  bool in_game;
 };
