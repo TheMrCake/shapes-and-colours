@@ -13,10 +13,10 @@
 #include "game_parameters.hpp"
 
 PhysicsSystem::PhysicsSystem(EntityManager& entity_manager)
-  : world_id()
-  , entity_manager(entity_manager)
+  : System(entity_manager)
+  , world_id()
   {
-  b2WorldDef world_def{};
+  b2WorldDef world_def = b2DefaultWorldDef();
   world_def.gravity = {0.0f, 0.0f};
   world_def.enableSleep = true;
   

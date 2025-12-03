@@ -5,17 +5,16 @@
 
 // Local includes
 #include "managers/entity_manager.hpp"
+#include "systems/system.hpp"
 
 
 
-class PhysicsSystem {
+class PhysicsSystem : System {
 public:
   PhysicsSystem(EntityManager& entity_manager);
 
-  void update(const float delta_time);
+  virtual void update(const float delta_time) override;
 
 private:
   b2WorldId world_id;
-
-  EntityManager& entity_manager;
 };

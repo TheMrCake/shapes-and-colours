@@ -11,6 +11,7 @@ add_executable(
   game_objects/components/sprite_component.cpp
   game_objects/components/transform_component.cpp
   # Systems
+  systems/system.cpp
   systems/physics_system.cpp
   # Managers
   managers/entity_manager.cpp

@@ -17,7 +17,7 @@ GameSystem::GameSystem()
   {}
 
 void GameSystem::init() {
-  entity_manager.make_entity<LightRay>();
+  // entity_manager.make_entity<LightRay>();
 }
 
 void GameSystem::update(const float dt) {
