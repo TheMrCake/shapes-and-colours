@@ -9,11 +9,14 @@
 #include "game_objects/components/sprite_component.hpp"
 #include "game_objects/entities.hpp"
 #include "managers/entity_manager.hpp"
+#include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
 
 GameSystem::GameSystem()
   : entity_manager()
   , physics_system(entity_manager)
+  , input_system(entity_manager)
+  , in_game(false)
   {}
 
 void GameSystem::init() {
@@ -57,4 +60,12 @@ void GameSystem::render(sf::RenderWindow& window) {
   //   window.draw(bullet->get_sprite());
   // }
   // window.draw(shape);
+}
+
+
+void GameSystem::handle_event(sf::Event event) {
+  if (in_game)
+  {
+    input_system.handle_event(event);
+  }
 }

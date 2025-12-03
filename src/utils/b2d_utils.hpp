@@ -34,8 +34,15 @@ namespace Box2DUtils {
   //Convert from Vector2f to a b2Vec2
   const b2Vec2 sv2_to_bv2(const sf::Vector2f& in);
 
-  //Convert between screenspace.y to physics.y 
+  // Convert between screenspace.y to physics.y 
   const sf::Vector2f invert_height(const sf::Vector2f& in);
+  // Get magnitude squared of the sfml vector
+  const float magnitude_squared(const sf::Vector2f& in);
+  // Get magnitude of the sfml vector
+  const float magnitude(const sf::Vector2f& in);
+  // Normalise sfml vector
+  const sf::Vector2f normalize(const sf::Vector2f& in);
+
   
   // Create a Box2D rectangle body
   b2BodyId create_physics_rect(b2WorldId& world_id, const bool dynamic, const sf::Vector2f& position, const sf::Vector2f& size);

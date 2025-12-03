@@ -2,6 +2,7 @@
 
 // STD includes
 #include <cmath>
+#include <type_traits>
 
 // Box2d includes
 #include "box2d/box2d.h"
@@ -58,6 +59,21 @@ const b2Vec2 Box2DUtils::sv2_to_bv2(const sf::Vector2f& in) {
 // Convert between screenspace.y to physics.y 
 const sf::Vector2f Box2DUtils::invert_height(const sf::Vector2f& in) {
   return sf::Vector2f(in.x, GameParameters::game_height - in.y);
+}
+
+// Get magnitude of the sfml vector
+const float Box2DUtils::magnitude_squared(const sf::Vector2f& in) {
+  return (in.x * in.x) + (in.y * in.y);
+}
+
+// Get magnitude of the sfml vector
+const float Box2DUtils::magnitude(const sf::Vector2f& in) {
+  return std::sqrt(magnitude_squared(in));
+}
+
+// Normalise sfml vector
+const sf::Vector2f Box2DUtils::normalize(const sf::Vector2f& in) {
+  return in/magnitude(in);
 }
 
 // Create box2d rectangle

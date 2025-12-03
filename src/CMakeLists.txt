@@ -13,6 +13,7 @@ add_executable(
   # Systems
   systems/system.cpp
   systems/physics_system.cpp
+  systems/input_system.cpp
   # Managers
   managers/entity_manager.cpp
   # Utils
