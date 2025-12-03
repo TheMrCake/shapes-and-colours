@@ -5,10 +5,9 @@
 #include <optional>
 #include <type_traits>
 #include <unordered_map>
-#include <variant>
 
 // Local includes
-#include "game_objects/components/collision_component.hpp"
+#include "game_objects/components/physics_component.hpp"
 #include "game_objects/components/input_component.hpp"
 #include "game_objects/components/light_component.hpp"
 #include "game_objects/components/shape_component.hpp"
@@ -16,8 +15,14 @@
 #include "game_objects/components/transform_component.hpp"
 #include "game_objects/entity.hpp"
 
+template<typename ComponentType>
+using ComponentPtr = std::unique_ptr<ComponentType>;
+
+template<typename ComponentType>
+using ComponentWeakPtr = ComponentType*;
+
 template<typename ComponentType, typename = std::enable_if<is_component_v<ComponentType>>>
-using ComponentMap = std::unordered_map<EntityId, std::unique_ptr<ComponentType>>;
+using ComponentMap = std::unordered_map<EntityId, ComponentPtr<ComponentType>>;
 
 // Pool components for easy access
 template<typename ComponentType>
@@ -31,7 +36,7 @@ struct ComponentStorage : ComponentPool<Components>... {};
 
 // When making new components also put their name here in alphabetical order
 using AllComponentStorages = ComponentStorage<
-  Collision,
+  Physics,
   Input,
   Light,
   Shape,
@@ -58,8 +63,12 @@ public:
   }
 
   template<typename ComponentType>
-  ComponentType& get_entity_component(EntityId entity_id) {
-    return static_cast<ComponentPool<ComponentType>*>(this)->components.get;
+  std::optional<ComponentWeakPtr<ComponentType>> get_entity_component(EntityId entity_id) {
+    ComponentMap<ComponentType>& component_map = static_cast<ComponentPool<ComponentType>*>(this)->components;
+    if (auto it = component_map.find(entity_id); it != component_map.end()) {
+      return it->second.get();
+    }
+    return std::nullopt;
   }
 
   template<typename E, typename = std::enable_if<is_entity_v<E>>>
