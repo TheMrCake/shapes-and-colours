@@ -15,6 +15,7 @@ add_executable(
   # Managers
   managers/entity_manager.cpp
   # Utils
+  utils/b2d_utils.cpp
   utils/color_utils.cpp)
 
 target_include_directories(
