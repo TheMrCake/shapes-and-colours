@@ -51,7 +51,7 @@ const sf::Vector2f Box2DUtils::bv2_to_sv2(const b2Vec2& in) {
 }
 
 // Convert from Vector2f to a b2Vec2
-const b2Vec2 sv2_to_bv2(const sf::Vector2f& in) {
+const b2Vec2 Box2DUtils::sv2_to_bv2(const sf::Vector2f& in) {
   return {in.x * GameParameters::physics_scale_inv, in.y * GameParameters::physics_scale_inv};
 }
 
