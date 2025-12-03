@@ -44,11 +44,11 @@ void GameSystem::update(const float dt) {
 
 void GameSystem::render(sf::RenderWindow& window) {  
   for (auto&& [e_id, component] : entity_manager.get_component_map<Sprite>()) {
-    window.draw(component->get_sprite_const());
+    window.draw(component->sprite);
   }
 
   for (auto&& [e_id, component] : entity_manager.get_component_map<Shape>()) {
-    window.draw(*component->get_shape_const());
+    window.draw(*component->shape);
   }
   // for (auto& ship : ships) {
   //   window.draw(ship->get_sprite());
