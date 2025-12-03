@@ -12,12 +12,29 @@
 #include "box2d/id.h"
 #include "box2d/math_functions.h"
 
+// SFML based transform
+struct transform_info {
+  sf::Vector2f position;
+  float rotation_deg;
+};
+
 namespace Box2DUtils {
+  //Convert from b2Transform to a transform_info
+  const transform_info btransform_to_transform_info(const b2Transform& transform);
+  //Convert from transform_info to a b2Transform
+  const b2Transform transform_info_to_btransform(const transform_info& transform);
+
+  // Convert from radians to degrees
+  const float rad_to_deg(const float rad);
+  // Convert from degrees to radians
+  const float deg_to_rad(const float deg);
+
   //Convert from b2Vec2 to a Vector2f
   const sf::Vector2f bv2_to_sv2(const b2Vec2& in);
   //Convert from Vector2f to a b2Vec2
   const b2Vec2 sv2_to_bv2(const sf::Vector2f& in);
-  //Convert from screenspace.y to physics.y 
+
+  //Convert between screenspace.y to physics.y 
   const sf::Vector2f invert_height(const sf::Vector2f& in);
   
   // Create a Box2D rectangle body

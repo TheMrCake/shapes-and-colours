@@ -1,12 +1,47 @@
 #include "utils/b2d_utils.hpp"
 
+// STD includes
+#include <cmath>
+
 // Box2d includes
 #include "box2d/box2d.h"
 #include "box2d/collision.h"
+#include "box2d/math_functions.h"
 #include "box2d/types.h"
 
 // Local includes
 #include "game_parameters.hpp"
+
+
+//Convert from b2Transform to a transform_info
+const transform_info Box2DUtils::btransform_to_transform_info(const b2Transform& transform) {
+  return transform_info{
+    invert_height(bv2_to_sv2(transform.p)),
+    rad_to_deg(std::asin(transform.q.s))
+  };  
+}
+
+//Convert from transform_info to a b2Transform
+const b2Transform Box2DUtils::transform_info_to_btransform(const transform_info& transform) {
+  const float rotation_rad = deg_to_rad(transform.rotation_deg);
+
+  return b2Transform{
+    sv2_to_bv2(invert_height(transform.position)),
+    b2Rot{std::cos(rotation_rad), std::sin(rotation_rad)}
+  };
+}
+
+
+
+// Convert from radians to degrees
+const float Box2DUtils::rad_to_deg(const float rad) {
+  return rad * (180.f/M_PI);
+}
+
+// Convert from degrees to radians
+const float Box2DUtils::deg_to_rad(const float deg) {
+  return deg * (M_PI/180.f);
+}
 
 
 
@@ -20,7 +55,7 @@ const b2Vec2 sv2_to_bv2(const sf::Vector2f& in) {
   return {in.x * GameParameters::physics_scale_inv, in.y * GameParameters::physics_scale_inv};
 }
 
-// Convert from screenspace.y to physics.y 
+// Convert between screenspace.y to physics.y 
 const sf::Vector2f Box2DUtils::invert_height(const sf::Vector2f& in) {
   return sf::Vector2f(in.x, GameParameters::game_height - in.y);
 }
