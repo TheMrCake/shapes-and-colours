@@ -18,11 +18,25 @@ add_executable(
   managers/entity_manager.cpp
   # Utils
   utils/b2d_utils.cpp
-  utils/color_utils.cpp)
+  utils/color_utils.cpp
+        pause_menu.hpp
+        pause_menu.cpp
+        scene.hpp
+        game_scene.hpp
+        game_scene.cpp
+        StartMenuScene.hpp
+        StartMenuScene.cpp
+)
 
 target_include_directories(
   ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} lib/SFML/include
                           lib/box2d/include)
+#target_include_directories(
+#        ${PROJECT_NAME} PRIVATE
+#        ${CMAKE_CURRENT_SOURCE_DIR}
+#        ${CMAKE_CURRENT_SOURCE_DIR}/include
+#        lib/box2d/include
+#)
 target_link_libraries(${PROJECT_NAME} box2d sfml-graphics sfml-window
                       sfml-system)
 

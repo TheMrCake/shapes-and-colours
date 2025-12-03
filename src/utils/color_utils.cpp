@@ -3,7 +3,7 @@
 // STD include
 #include <algorithm>
 #include <cmath>
-
+#include <algorithm>
 // SFML includes
 #include "SFML/Graphics/Color.hpp"
 
