@@ -1,17 +1,9 @@
 #include "game_objects/components/sprite_component.hpp"
 
+Sprite::Sprite()
+  : Component<Sprite>(INVALID_ENTITY_ID)
+  {}
 
-
-sf::Sprite& Sprite::get_sprite() {
-  return sprite;
-}
-
-const sf::Sprite& Sprite::get_sprite_const(){
-  return get_sprite();
-}
-
-
-
-void Sprite::update_impl(const float delta_time) {
-  
-} 
+Sprite::Sprite(EntityId entity_id)
+  : Component<Sprite>(entity_id)
+  {}

@@ -5,12 +5,7 @@
 
 
 
-class Input : Component<Input> {
-  friend Component<Input>;
-public:
+struct Input : Component<Input> {
   Input();
   Input(EntityId entity_id);
-  
-private:
-  void update_impl(const float delta_time); 
 };

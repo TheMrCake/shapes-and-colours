@@ -1,16 +1,16 @@
 #pragma once
 
 // Local includes
+#include "box2d/id.h"
 #include "game_objects/entity.hpp"
 
 
 
-class Collision : Component<Collision> {
-  friend Component<Collision>;
-public:
-  Collision();
-  Collision(EntityId entity_id);
-  
-private:
-  void update_impl(const float delta_time); 
+struct Physics : Component<Physics> {
+  Physics();
+  Physics(EntityId entity_id);
+
+  void set_body_id(b2BodyId new_body_id);
+
+  b2BodyId body_id;
 };

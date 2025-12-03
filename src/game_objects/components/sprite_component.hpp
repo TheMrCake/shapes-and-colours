@@ -5,14 +5,9 @@
 #include "game_objects/entity.hpp"
 
 
-class Sprite : Component<Sprite> {
-  friend Component<Sprite>;
-public:
-  sf::Sprite& get_sprite();
-  const sf::Sprite& get_sprite_const();
-
-private:
-  void update_impl(const float delta_time); 
+struct Sprite : Component<Sprite> {
+  Sprite();
+  Sprite(EntityId entity_id);
 
   sf::Sprite sprite;
 };

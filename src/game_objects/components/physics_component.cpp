@@ -12,7 +12,3 @@ Physics::Physics()
 Physics::Physics(EntityId entity_id)
   : Component<Physics>(entity_id)
   {}
-
-void Collision::update_impl(const float delta_time) {
-  
-}

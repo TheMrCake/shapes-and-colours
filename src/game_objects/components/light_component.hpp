@@ -8,23 +8,13 @@
 #include "game_objects/entity.hpp"
 
 
-class Light : Component<Light> {
-  friend Component<Light>;
-public:
+struct Light : Component<Light> {
   Light();
   Light(EntityId entity_id);
-
-  const sf::Color get_color();
-  const float& get_wavelength_as_nm();
-
-  const int& get_remaining_collisions();
-
-private:
-  void update_impl(const float delta_time); 
 
   constexpr static int max_collisions = GameParameters::max_ray_collisions;
   constexpr static float max_length = GameParameters::max_ray_length;
 
-  const float wavelength;
-  const int remaining_collisions;
+  float wavelength;
+  int remaining_collisions;
 };

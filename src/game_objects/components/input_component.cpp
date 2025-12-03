@@ -10,8 +10,3 @@ Input::Input()
 Input::Input(EntityId entity_id)
   : Component<Input>(entity_id)
   {}
-
-
-void Input::update_impl(const float delta_time) {
-  
-}; 

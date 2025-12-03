@@ -9,14 +9,9 @@
 
 
 
-class Shape : Component<Shape> {
-  friend Component<Shape>;
-public:
-  std::unique_ptr<sf::Shape>& get_shape();
-  const std::unique_ptr<sf::Shape>& get_shape_const();
-
-private:
-  void update_impl(const float delta_time); 
+struct Shape : Component<Shape> {
+  Shape();
+  Shape(EntityId entity_id);
 
   std::unique_ptr<sf::Shape> shape;
 };

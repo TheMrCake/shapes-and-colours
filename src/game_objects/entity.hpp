@@ -9,8 +9,7 @@ using EntityId = uint16_t;
 constexpr EntityId INVALID_ENTITY_ID = -1;
 
 template <typename Derived>
-class Component {
-public:
+struct Component {
   Component()
     : entity_id(INVALID_ENTITY_ID)
     {}
@@ -21,15 +20,7 @@ public:
 
   ~Component() = default;
 
-  void update(const float delta_time) {
-    static_cast<Derived*>(this)->update_impl(delta_time); 
-  }
-
-protected:
   const EntityId entity_id;
-
-private:
-  void update_impl(const float delta_time) { /* Implement in Derived classes */ }; 
 };
 
 

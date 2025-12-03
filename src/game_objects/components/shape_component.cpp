@@ -1,16 +1,9 @@
 #include "game_objects/components/shape_component.hpp"
 
-std::unique_ptr<sf::Shape>& Shape::get_shape() {
-  return shape;
-}
+Shape::Shape()
+  : Component<Shape>(INVALID_ENTITY_ID)
+  {}
 
-const std::unique_ptr<sf::Shape>& Shape::get_shape_const() {
-  return get_shape();
-}
-
-
-
-void Shape::update_impl(const float delta_time) {
-  
-} 
-
+Shape::Shape(EntityId entity_id)
+  : Component<Shape>(entity_id)
+  {}
