@@ -12,6 +12,8 @@ class PhysicsSystem {
 public:
   PhysicsSystem(EntityManager& entity_manager);
 
+  void update(const float delta_time);
+
 private:
   b2WorldId world_id;
 
