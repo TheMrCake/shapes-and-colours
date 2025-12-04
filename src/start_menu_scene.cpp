@@ -1,9 +1,13 @@
 //
 // Created by deborah ama on 03/12/2025.
 //
-#include "StartMenuScene.hpp"
-#include "game_scene.hpp"
+#include "start_menu_scene.hpp"
+
+// SFML includes
 #include <SFML/Graphics.hpp>
+
+// Local includes
+#include "game_scene.hpp"
 
 StartMenuScene::StartMenuScene(sf::Vector2u windowSize)
     : m_selectedIndex(0), m_next(this), m_windowSize(windowSize)

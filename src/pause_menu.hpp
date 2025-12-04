@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "Scene.hpp"
+#include "scene.hpp"
 #include <SFML/Graphics.hpp>
 
 class PauseMenuScene : public Scene {

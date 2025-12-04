@@ -1,9 +1,15 @@
 //
 // Created by deborah ama on 03/12/2025.
 //
-
 #pragma once
+
+// STD includes
+#include <memory>
+
+// SFML includes
 #include <SFML/Graphics.hpp>
+
+
 
 class Scene {
 public:

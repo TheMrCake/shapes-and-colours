@@ -1,11 +1,17 @@
 //
 // Created by deborah ama on 03/12/2025.
 //
-
 #pragma once
-#include "Scene.hpp"
-#include <SFML/Graphics.hpp>
+
+// STD includes
 #include <iostream>
+
+// SFML includes
+#include <SFML/Graphics.hpp>
+
+// Local includes
+#include "scene.hpp"
+
 
 class StartMenuScene : public Scene {
 public:

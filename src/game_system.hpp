@@ -6,12 +6,14 @@
 
 // Local includes
 #include "managers/entity_manager.hpp"
+#include "scene.hpp"
 #include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
+#include <memory>
 
 class GameSystem {
 public:
-  GameSystem();
+  GameSystem(sf::Vector2u window_size);
 
   void init();
 
@@ -26,6 +28,8 @@ private:
 
   PhysicsSystem physics_system;
   InputSystem input_system;
+
+  std::unique_ptr<Scene> current_scene;
 
   bool in_game;
 };

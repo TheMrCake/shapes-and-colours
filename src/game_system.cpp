@@ -9,13 +9,15 @@
 #include "game_objects/components/sprite_component.hpp"
 #include "game_objects/entities.hpp"
 #include "managers/entity_manager.hpp"
+#include "start_menu_scene.hpp"
 #include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
 
-GameSystem::GameSystem()
+GameSystem::GameSystem(sf::Vector2u window_size)
   : entity_manager()
   , physics_system(entity_manager)
   , input_system(entity_manager)
+  , current_scene(std::make_unique<StartMenuScene>(window_size))
   , in_game(false)
   {}
 
@@ -24,28 +26,17 @@ void GameSystem::init() {
 }
 
 void GameSystem::update(const float dt) {
-  // for (auto& ship : ships) {  
-  //   ship->update(dt);
-  //   if (ship->get_ready_to_fire()) {
-  //     bullets.emplace_back(std::move(ship->shoot()));
-  //   }
-  // }
+  Scene* next = current_scene->nextScene();
 
-  // for (auto& bullet : bullets) {
-  //   bullet->update(dt);
-  // }
-
-  // std::erase_if(ships,
-  //     [dt, this](auto &ship) -> bool {
-  //       return !ship->get_alive();
-  //     });
-  // std::erase_if(bullets,
-  //     [dt](auto &bullet) -> bool {
-  //        return !bullet->get_alive();
-  //     });
+  if (next != current_scene.get()) {
+    current_scene.reset();
+    current_scene = std::unique_ptr<Scene>(next);
+  }
 }
 
 void GameSystem::render(sf::RenderWindow& window) {  
+  current_scene->render(window);
+
   for (auto&& [e_id, component] : entity_manager.get_component_map<Sprite>()) {
     window.draw(component->sprite);
   }
@@ -53,17 +44,12 @@ void GameSystem::render(sf::RenderWindow& window) {
   for (auto&& [e_id, component] : entity_manager.get_component_map<Shape>()) {
     window.draw(*component->shape);
   }
-  // for (auto& ship : ships) {
-  //   window.draw(ship->get_sprite());
-  // }
-  // for (auto& bullet : bullets) {
-  //   window.draw(bullet->get_sprite());
-  // }
-  // window.draw(shape);
 }
 
 
 void GameSystem::handle_event(sf::Event event) {
+  current_scene->handleEvent(event);
+
   if (in_game)
   {
     input_system.handle_event(event);
