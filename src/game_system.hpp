@@ -14,6 +14,7 @@
 class GameSystem {
 public:
   GameSystem(sf::Vector2u window_size);
+  ~GameSystem() = default;
 
   void init();
 

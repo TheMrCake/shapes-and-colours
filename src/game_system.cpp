@@ -26,11 +26,16 @@ void GameSystem::init() {
 }
 
 void GameSystem::update(const float dt) {
-  Scene* next = current_scene->nextScene();
+  current_scene->update(dt);
 
+  Scene* next = current_scene->nextScene();
   if (next != current_scene.get()) {
-    current_scene.reset();
-    current_scene = std::unique_ptr<Scene>(next);
+    current_scene.reset(next);
+    //current_scene = std::unique_ptr<Scene>(next);
+  }
+
+  if (in_game) {
+    physics_system.update(dt);
   }
 }
 
