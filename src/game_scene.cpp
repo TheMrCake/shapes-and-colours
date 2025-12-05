@@ -6,9 +6,14 @@
 #include "pause_menu.hpp"
 #include <cmath>
 #include <iostream>
+#include <objc/objc.h>
 
-GameScene::GameScene(sf::Vector2u windowSize)
-    : m_next(this), windowSize(windowSize)
+#include "game_objects/entities.hpp"
+#include "managers/entity_manager.hpp"
+
+
+GameScene::GameScene(sf::Vector2u windowSize, EntityManager& em)
+    : m_next(this), windowSize(windowSize), entityManager(em), lightSystem(em)
 {
     // bulbling
     if (!bulbTexture.loadFromFile("resources/bulbling.png")) {
@@ -33,6 +38,8 @@ GameScene::GameScene(sf::Vector2u windowSize)
     crystalShape.setOutlineThickness(2.f);
     crystalShape.setPosition(windowSize.x / 3.f, windowSize.y / 2.f);
 
+    beamId = create_light_ray(entityManager, windowSize, sf::Vector2f(-1.f, 1.f));
+
     // Border
     float thickness = 10.f;
 
@@ -46,8 +53,42 @@ GameScene::GameScene(sf::Vector2u windowSize)
 
 void GameScene::handleEvent(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
-        m_next = new PauseMenuScene(windowSize);
+        m_next = new PauseMenuScene(windowSize, entityManager,this);
     }
+
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::A) {
+            auto& lights = entityManager.get_component_map<Light>();
+            for (auto& [id, lightPtr] : lights) {
+                lightPtr->rotatingLeft = true;
+            }
+        }
+        if (event.key.code == sf::Keyboard::D) {
+            auto& lights = entityManager.get_component_map<Light>();
+            for (auto& [id, lightPtr] : lights) {
+                lightPtr->rotatingRight = true;
+            }
+        }
+    }
+    if (event.type == sf::Event::KeyReleased) {
+        if (event.key.code == sf::Keyboard::A) {
+            auto& lights = entityManager.get_component_map<Light>();
+            for (auto& [id, lightPtr] : lights) {
+                lightPtr->rotatingLeft = false;
+            }
+        }
+        if (event.key.code == sf::Keyboard::D) {
+            auto& lights = entityManager.get_component_map<Light>();
+            for (auto& [id, lightPtr] : lights) {
+                lightPtr->rotatingRight = false;
+            }
+        }
+    }
+
+    // auto& light = *entityManager.get_entity_component<Light>(beamId).value();
+    // light.rotatingLeft = true;  // or false depending on input
+
+
 }
 
 void GameScene::update(float dt) {
@@ -59,6 +100,11 @@ void GameScene::update(float dt) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) bulbSprite.move(0, speed * dt);
 
 
+    if (auto beamLight = entityManager.get_entity_component<Light>(beamId)) {
+        (*beamLight)->rotatingLeft  = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+        (*beamLight)->rotatingRight = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+    }
+
     // border pulse effect
     float t = glowClock.getElapsedTime().asSeconds();
     int alpha = 100 + static_cast<int>(100 * std::sin(t * 2.f));
@@ -66,13 +112,29 @@ void GameScene::update(float dt) {
     sf::Color glowColour(80, 100, 150, alpha);
     border.setOutlineColor(glowColour);
 
+    lightSystem.update(dt);
 
+
+}
+
+void GameScene::resumeGame() {
+    paused = false;
+    if (auto shapeOpt = entityManager.get_entity_component<Shape>(beamId)) {
+        (*shapeOpt)->visible = true;
+    }
 }
 
 void GameScene::render(sf::RenderWindow& window) {
     window.draw(bulbSprite);
     window.draw(border);
     window.draw(crystalShape);
+
+    auto& shapes = entityManager.get_component_map<Shape>();
+    for (auto& [id, shapePtr] : shapes) {
+        if (shapePtr->shape) {
+            window.draw(*shapePtr->shape);
+        }
+    }
 }
 
 Scene* GameScene::nextScene() { return m_next; }

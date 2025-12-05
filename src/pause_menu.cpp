@@ -6,9 +6,9 @@
 #include "game_scene.hpp"
 #include <iostream>
 
-PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize)
+PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager& em, GameScene* gameScene)
     : m_selectedIndex(0), m_resumeSelected(false), m_quitSelected(false),
-      m_next(this), windowSize(windowSize)
+       m_next(this), windowSize(windowSize), entityManager(em), gameScene(gameScene)
 {
     if (!m_font.loadFromFile("resources/ScienceGothic.ttf")){
         std::cerr << "Failed to load font\n";
@@ -52,13 +52,14 @@ void PauseMenuScene::handleEvent(const sf::Event& event) {
                 m_quitSelected = true;
             }
         }
+        //std::cout << "Enter pressed, resumeSelected = " << m_resumeSelected << "\n";
     }
 }
 
 void PauseMenuScene::update(float) {
     if (m_resumeSelected) {
         m_resumeSelected = false;
-        m_next = new GameScene(windowSize); // back to gameplay
+//        m_next = new GameScene(windowSize, entityManager); // back to gameplay
     }
     if (m_quitSelected) {
         m_quitSelected = false;
@@ -76,7 +77,21 @@ void PauseMenuScene::render(sf::RenderWindow& window) {
     window.draw(m_quitText);
 }
 
-Scene* PauseMenuScene::nextScene() { return m_next; }
+Scene* PauseMenuScene::nextScene() {
+    if (m_resumeSelected) {
+        gameScene->resumeGame();
+
+        return gameScene; // return the same instance
+
+    }
+    if (m_quitSelected) {
+        // handle quitting to start menu or exit
+        //std::cout << "Enter pressed, quiteSelcted = " << m_resumeSelected << "\n";
+
+    }
+    return this;
+    std::cout << "Enter pressed, resumeSelected = " << m_resumeSelected << "\n";
+}
 
 void PauseMenuScene::updateSelection() {
     if (m_selectedIndex == 0) {

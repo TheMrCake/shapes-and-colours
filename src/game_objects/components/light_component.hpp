@@ -6,6 +6,7 @@
 // Local includes
 #include "game_parameters.hpp"
 #include "game_objects/entity.hpp"
+#include "SFML/System/Vector2.hpp"
 
 
 struct Light : Component<Light> {
@@ -17,4 +18,11 @@ struct Light : Component<Light> {
 
   float wavelength;
   int remaining_collisions;
+
+  sf::Vector2f direction {1.f, 0.f};
+  sf::Vector2f targetDirection;
+  float speed = 400.f;
+
+  bool rotatingLeft = false;
+  bool rotatingRight = false;
 };

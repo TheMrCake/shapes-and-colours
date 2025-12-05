@@ -14,4 +14,5 @@ struct Shape : Component<Shape> {
   Shape(EntityId entity_id);
 
   std::unique_ptr<sf::Shape> shape;
+    bool visible = true;
 };

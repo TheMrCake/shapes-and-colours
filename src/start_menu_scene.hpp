@@ -11,11 +11,12 @@
 
 // Local includes
 #include "scene.hpp"
+#include "managers/entity_manager.hpp"
 
 
 class StartMenuScene : public Scene {
 public:
-    StartMenuScene(sf::Vector2u windowSize);
+    StartMenuScene(sf::Vector2u windowSize, EntityManager& em);
 
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
@@ -32,4 +33,5 @@ private:
     Scene* m_next;
 
     sf::Vector2u m_windowSize;
+    EntityManager& entityManager;
 };

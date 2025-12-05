@@ -6,9 +6,14 @@
 #include "scene.hpp"
 #include <SFML/Graphics.hpp>
 
+#include "game_scene.hpp"
+#include "managers/entity_manager.hpp"
+
 class PauseMenuScene : public Scene {
 public:
-    PauseMenuScene(sf::Vector2u windowSize);
+    PauseMenuScene(sf::Vector2u windowSize, EntityManager& em, GameScene* gameScene);
+
+
 
     void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
@@ -27,6 +32,16 @@ private:
 
     Scene* m_next;
     sf::Vector2u windowSize;
+
+    EntityManager& entityManager;
+    GameScene* gameScene;
+    //PauseMenuScene(sf::Vector2u windowSize, EntityManager &em);
+
+    //void handleEvent(const sf::Event &event);
+
+    //void update(float);
+
+    //void render(sf::RenderWindow &window);
 
     void updateSelection();
 };

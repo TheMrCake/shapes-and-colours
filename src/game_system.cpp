@@ -18,7 +18,8 @@ GameSystem::GameSystem(sf::Vector2u window_size)
   , physics_system(entity_manager)
   , input_system(entity_manager)
   , crystal_system(entity_manager)
-  , current_scene(std::make_unique<StartMenuScene>(window_size))
+  , light_system(entity_manager)
+  , current_scene(std::make_unique<StartMenuScene>(window_size, entity_manager))
   , in_game(false)
   {}
 
@@ -38,6 +39,7 @@ void GameSystem::update(const float dt) {
   if (in_game) {
     physics_system.update(dt);
     crystal_system.update(dt);
+    light_system.update(dt);
   }
 }
 

@@ -15,6 +15,7 @@
 #include "game_objects/components/transform_component.hpp"
 #include "game_objects/components/crystal_component.hpp"
 #include "game_objects/entity.hpp"
+#include "game_objects/components/light_beam_component.hpp"
 
 template<typename ComponentType>
 using ComponentPtr = std::unique_ptr<ComponentType>;
@@ -43,7 +44,8 @@ using AllComponentStorages = ComponentStorage<
   Shape,
   Sprite,
   Transform,
-  Crystal
+  Crystal,
+  LightBeam
 >;
 
 class EntityManager : AllComponentStorages {
@@ -74,7 +76,7 @@ public:
   }
 
   template<typename E, typename = std::enable_if<is_entity_v<E>>>
-  E make_entity() {
+  EntityId make_entity() {
     EntityId current_id = next_id;
     next_id++;
 
@@ -82,7 +84,7 @@ public:
       this->add_components_to_pool<std::decay_t<decltype(component)>...>(current_id);
     }, typename E::component_types{});
 
-    return {current_id};
+    return current_id;
   };
 private:
 

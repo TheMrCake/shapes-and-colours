@@ -8,9 +8,10 @@
 
 // Local includes
 #include "game_scene.hpp"
+#include "managers/entity_manager.hpp"
 
-StartMenuScene::StartMenuScene(sf::Vector2u windowSize)
-    : m_selectedIndex(0), m_next(this), m_windowSize(windowSize)
+StartMenuScene::StartMenuScene(sf::Vector2u windowSize, EntityManager& em)
+    : m_selectedIndex(0), m_next(this), m_windowSize(windowSize), entityManager(em)
 {
     if (!m_font.loadFromFile("resources/ScienceGothic.ttf")){
         std::cerr << "Failed to load font\n";
@@ -49,7 +50,7 @@ void StartMenuScene::handleEvent(const sf::Event& event) {
         }
         else if (event.key.code == sf::Keyboard::Enter) {
             if (m_selectedIndex == 0) {
-                m_next = new GameScene(m_windowSize); // start gameplay
+                m_next = new GameScene(m_windowSize, entityManager); // start gameplay
             } else {
                 m_next = nullptr; // exit
             }
