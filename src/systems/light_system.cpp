@@ -16,6 +16,13 @@ void LightSystem::update(float dt) {
         Light& ray = *rayPtr;
 
 
+        if (auto shapeOpt = entity_manager.get_entity_component<Shape>(id)) {
+            Shape* rayShape = *shapeOpt;
+
+            // ⬇️ Skip updating if it's hidden
+            if (!rayShape->visible) continue;
+        }
+
         float currentAngle = std::atan2(ray.direction.y, ray.direction.x);
 
         float rotationSpeedDeg = 90.f; // degrees per second

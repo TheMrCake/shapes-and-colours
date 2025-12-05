@@ -53,7 +53,14 @@ GameScene::GameScene(sf::Vector2u windowSize, EntityManager& em)
 
 void GameScene::handleEvent(const sf::Event& event) {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
-        m_next = new PauseMenuScene(windowSize, entityManager,this);
+        auto& lights = entityManager.get_component_map<Light>();
+        for (auto& [id, lightPtr] : lights) {
+            if (auto shapeOpt = entityManager.get_entity_component<Shape>(id)) {
+                (*shapeOpt)->visible = false;
+            }
+        }
+        paused = true;
+        m_next = new PauseMenuScene(windowSize, entityManager, this);
     }
 
     if (event.type == sf::Event::KeyPressed) {
@@ -119,8 +126,11 @@ void GameScene::update(float dt) {
 
 void GameScene::resumeGame() {
     paused = false;
-    if (auto shapeOpt = entityManager.get_entity_component<Shape>(beamId)) {
-        (*shapeOpt)->visible = true;
+    auto& lights = entityManager.get_component_map<Light>();
+    for (auto& [id, lightPtr] : lights) {
+        if (auto shapeOpt = entityManager.get_entity_component<Shape>(id)) {
+            (*shapeOpt)->visible = true;
+        }
     }
 }
 
@@ -131,7 +141,7 @@ void GameScene::render(sf::RenderWindow& window) {
 
     auto& shapes = entityManager.get_component_map<Shape>();
     for (auto& [id, shapePtr] : shapes) {
-        if (shapePtr->shape) {
+        if (shapePtr->shape && shapePtr->visible) {
             window.draw(*shapePtr->shape);
         }
     }
