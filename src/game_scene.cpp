@@ -10,6 +10,7 @@
 GameScene::GameScene(sf::Vector2u windowSize)
     : m_next(this), windowSize(windowSize)
 {
+    // bulbling
     if (!bulbTexture.loadFromFile("resources/bulbling.png")) {
         std::cerr << "Failed to load bulb image\n";
     }
@@ -17,6 +18,20 @@ GameScene::GameScene(sf::Vector2u windowSize)
     bulbSprite.setOrigin(bulbTexture.getSize().x / 2.f, bulbTexture.getSize().y / 2.f);
     bulbSprite.setPosition(windowSize.x / 2.f, windowSize.y / 2.f);
     bulbSprite.setScale(0.15f,0.15f);
+
+    // crystal
+    crystalShape.setPointCount(6);
+    crystalShape.setPoint(0, sf::Vector2f(0.f, -50.f));   // top point
+    crystalShape.setPoint(1, sf::Vector2f(30.f, -20.f));  // upper right
+    crystalShape.setPoint(2, sf::Vector2f(30.f, 20.f));   // lower right
+    crystalShape.setPoint(3, sf::Vector2f(0.f, 50.f));    // bottom point
+    crystalShape.setPoint(4, sf::Vector2f(-30.f, 20.f));  // lower left
+    crystalShape.setPoint(5, sf::Vector2f(-30.f, -20.f)); // upper left
+
+    crystalShape.setFillColor(sf::Color(101, 96, 98));   // icy blue
+    crystalShape.setOutlineColor(sf::Color(129, 121, 125));
+    crystalShape.setOutlineThickness(2.f);
+    crystalShape.setPosition(windowSize.x / 3.f, windowSize.y / 2.f);
 
     // Border
     float thickness = 10.f;
@@ -57,7 +72,7 @@ void GameScene::update(float dt) {
 void GameScene::render(sf::RenderWindow& window) {
     window.draw(bulbSprite);
     window.draw(border);
-
+    window.draw(crystalShape);
 }
 
 Scene* GameScene::nextScene() { return m_next; }

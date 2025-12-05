@@ -5,6 +5,7 @@
 #pragma once
 #include "scene.hpp"
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/ConvexShape.hpp>
 
 class GameScene : public Scene {
 public:
@@ -22,6 +23,8 @@ private:
     Scene* m_next;
     sf::Vector2u windowSize;
 
+    //crystal
+    sf::ConvexShape crystalShape;
     //border
     sf::RectangleShape border;
     sf::Clock glowClock;

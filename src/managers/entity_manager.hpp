@@ -13,6 +13,7 @@
 #include "game_objects/components/shape_component.hpp"
 #include "game_objects/components/sprite_component.hpp"
 #include "game_objects/components/transform_component.hpp"
+#include "game_objects/components/crystal_component.hpp"
 #include "game_objects/entity.hpp"
 
 template<typename ComponentType>
@@ -41,7 +42,8 @@ using AllComponentStorages = ComponentStorage<
   Light,
   Shape,
   Sprite,
-  Transform
+  Transform,
+  Crystal
 >;
 
 class EntityManager : AllComponentStorages {

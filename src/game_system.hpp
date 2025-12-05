@@ -11,6 +11,8 @@
 #include "systems/physics_system.hpp"
 #include <memory>
 
+#include "systems/crystal_system.hpp"
+
 class GameSystem {
 public:
   GameSystem(sf::Vector2u window_size);
@@ -29,6 +31,7 @@ private:
 
   PhysicsSystem physics_system;
   InputSystem input_system;
+  CrystalSystem crystal_system;
 
   std::unique_ptr<Scene> current_scene;
 
