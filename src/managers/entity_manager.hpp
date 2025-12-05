@@ -86,6 +86,18 @@ public:
 
     return current_id;
   };
+
+  void remove_entity(EntityId id) {
+    // Remove from each component pool
+    remove_from_pool<Physics>(id);
+    remove_from_pool<Input>(id);
+    remove_from_pool<Light>(id);
+    remove_from_pool<Shape>(id);
+    remove_from_pool<Sprite>(id);
+    remove_from_pool<Transform>(id);
+    remove_from_pool<Crystal>(id);
+    remove_from_pool<LightBeam>(id);
+  }
 private:
 
   template<typename... ComponentTypes>
@@ -99,5 +111,10 @@ private:
     map.emplace(id, std::make_unique<ComponentType>(id));
   }
 
+  template<typename ComponentType>
+    void remove_from_pool(EntityId id) {
+    auto& map = get_component_map<ComponentType>();
+    map.erase(id);
+  }
   EntityId next_id;
 };

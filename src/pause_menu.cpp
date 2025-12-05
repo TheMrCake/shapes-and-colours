@@ -5,92 +5,136 @@
 #include "pause_menu.hpp"
 #include "game_scene.hpp"
 #include <iostream>
+#include "managers/entity_manager.hpp"
+#include "start_menu_scene.hpp"
 
 PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager& em, GameScene* gameScene)
     : m_selectedIndex(0), m_resumeSelected(false), m_quitSelected(false),
-       m_next(this), windowSize(windowSize), entityManager(em), gameScene(gameScene)
+      m_next(this), windowSize(windowSize), entityManager(em), gameScene(gameScene)
 {
-    if (!m_font.loadFromFile("resources/ScienceGothic.ttf")){
+    // Load font
+    if (!m_font.loadFromFile("resources/ScienceGothic.ttf")) {
         std::cerr << "Failed to load font\n";
     }
 
-    // Title
+    // Setup title
     m_title.setFont(m_font);
-    m_title.setString("Paused");
+    m_title.setString("PAUSED");
     m_title.setCharacterSize(56);
     m_title.setFillColor(sf::Color::White);
-    m_title.setPosition(windowSize.x / 2.f - m_title.getGlobalBounds().width / 2.f,
-                        windowSize.y / 4.f);
+    sf::FloatRect titleBounds = m_title.getLocalBounds();
+    m_title.setOrigin(titleBounds.width / 2.f, titleBounds.height / 2.f);
+    m_title.setPosition(windowSize.x / 2.f, windowSize.y / 4.f);
 
-    // Resume
+    // Setup resume button
     m_resumeText.setFont(m_font);
     m_resumeText.setString("Resume");
     m_resumeText.setCharacterSize(34);
     m_resumeText.setFillColor(sf::Color::Yellow);
-    m_resumeText.setPosition(windowSize.x / 2.f - m_resumeText.getGlobalBounds().width / 2.f,
-                             windowSize.y / 2.f);
+    sf::FloatRect resumeBounds = m_resumeText.getLocalBounds();
+    m_resumeText.setOrigin(resumeBounds.width / 2.f, resumeBounds.height / 2.f);
+    m_resumeText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f);
 
-    // Quit
+    // Setup quit button
     m_quitText.setFont(m_font);
-    m_quitText.setString("Quit");
+    m_quitText.setString("Quit to Menu");
     m_quitText.setCharacterSize(34);
     m_quitText.setFillColor(sf::Color::White);
-    m_quitText.setPosition(windowSize.x / 2.f - m_quitText.getGlobalBounds().width / 2.f,
-                           windowSize.y / 2.f + 60.f);
+    sf::FloatRect quitBounds = m_quitText.getLocalBounds();
+    m_quitText.setOrigin(quitBounds.width / 2.f, quitBounds.height / 2.f);
+    m_quitText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f + 70.f);
+
+    std::cout << "PauseMenuScene created\n";
 }
 
 void PauseMenuScene::handleEvent(const sf::Event& event) {
+    std::cout << "PauseMenu handleEvent called, type: " << event.type << "\n";
+
     if (event.type == sf::Event::KeyPressed) {
+        std::cout << "Key pressed: " << event.key.code << "\n";
+
+        // Navigate menu
         if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Down) {
             m_selectedIndex = 1 - m_selectedIndex;
             updateSelection();
+            std::cout << "Selection changed to: " << m_selectedIndex << "\n";
         }
-        else if (event.key.code == sf::Keyboard::Enter) {
+        // Select option
+        else if (event.key.code == sf::Keyboard::Return) {
+            std::cout << "Return pressed, selected index: " << m_selectedIndex << "\n";
             if (m_selectedIndex == 0) {
                 m_resumeSelected = true;
+                std::cout << "Resume selected!\n";
             } else {
                 m_quitSelected = true;
+                std::cout << "Quit selected!\n";
             }
         }
-        //std::cout << "Enter pressed, resumeSelected = " << m_resumeSelected << "\n";
+        // ESC also resumes
+        else if (event.key.code == sf::Keyboard::Escape) {
+            m_resumeSelected = true;
+            std::cout << "ESC pressed, resuming!\n";
+        }
     }
 }
 
-void PauseMenuScene::update(float) {
+void PauseMenuScene::update(float dt) {
+    // Check flags immediately in update
     if (m_resumeSelected) {
-        m_resumeSelected = false;
-//        m_next = new GameScene(windowSize, entityManager); // back to gameplay
+        std::cout << "Update: Resume flag is true\n";
     }
     if (m_quitSelected) {
-        m_quitSelected = false;
-        m_next = nullptr; // exit game
+        std::cout << "Update: Quit flag is true\n";
     }
 }
 
 void PauseMenuScene::render(sf::RenderWindow& window) {
-    sf::RectangleShape overlay(sf::Vector2f(window.getSize().x, window.getSize().y));
-    overlay.setFillColor(sf::Color(0, 0, 0, 150));
+    // Draw the game scene in the background (frozen)
+    if (gameScene) {
+        gameScene->render(window);
+    }
+
+    // Draw semi-transparent overlay
+    sf::RectangleShape overlay(sf::Vector2f(windowSize.x, windowSize.y));
+    overlay.setFillColor(sf::Color(0, 0, 0, 180));
     window.draw(overlay);
 
+    // Draw pause menu text
     window.draw(m_title);
     window.draw(m_resumeText);
     window.draw(m_quitText);
 }
 
 Scene* PauseMenuScene::nextScene() {
+    std::cout << "nextScene called - resumeSelected: " << m_resumeSelected
+              << ", quitSelected: " << m_quitSelected << "\n";
+
     if (m_resumeSelected) {
-        gameScene->resumeGame();
-
-        return gameScene; // return the same instance
-
+        std::cout << "Resuming game!\n";
+        m_resumeSelected = false;
+        if (gameScene) {
+            gameScene->resumeGame();
+            return gameScene;
+        }
     }
+
     if (m_quitSelected) {
-        // handle quitting to start menu or exit
-        //std::cout << "Enter pressed, quiteSelcted = " << m_resumeSelected << "\n";
+        std::cout << "Quitting to menu!\n";
+        m_quitSelected = false;
 
+        auto& lights = entityManager.get_component_map<Light>();
+        std::vector<EntityId> entitiesToRemove;
+        for (auto& [id, lightPtr] : lights) {
+            entitiesToRemove.push_back(id);
+        }
+        for (EntityId id : entitiesToRemove) {
+            entityManager.remove_entity(id);
+        }
+
+        return new StartMenuScene(windowSize, entityManager);
     }
+
     return this;
-    std::cout << "Enter pressed, resumeSelected = " << m_resumeSelected << "\n";
 }
 
 void PauseMenuScene::updateSelection() {
@@ -102,4 +146,3 @@ void PauseMenuScene::updateSelection() {
         m_quitText.setFillColor(sf::Color::Yellow);
     }
 }
-

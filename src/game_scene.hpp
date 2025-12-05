@@ -21,10 +21,12 @@ public:
 
     void resumeGame();
 
+    bool isPaused() const{ return paused;};
+
 private:
     EntityManager& entityManager;
     EntityId beamId;
-    bool paused = false;
+    bool paused;
 
     // add bulbling
     sf::Texture bulbTexture;

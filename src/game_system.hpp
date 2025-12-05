@@ -11,6 +11,7 @@
 #include "systems/physics_system.hpp"
 #include <memory>
 
+#include "game_scene.hpp"
 #include "systems/crystal_system.hpp"
 #include "systems/light_system.hpp"
 
@@ -26,7 +27,8 @@ public:
   void render(sf::RenderWindow& window);
 
   void handle_event(sf::Event event);
-  bool running= true;
+  bool running;
+  bool in_game;
 
 private:
   EntityManager entity_manager;
@@ -36,7 +38,6 @@ private:
   CrystalSystem crystal_system;
   LightSystem light_system;
   std::unique_ptr<Scene> current_scene;
-  std::unique_ptr<Scene> previous_scene;
+  std::unique_ptr<GameScene> saved_game_scene;
 
-  bool in_game;
 };
