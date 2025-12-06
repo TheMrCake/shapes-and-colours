@@ -1,6 +1,7 @@
 #pragma once
 
-struct GameParameters {
+struct GameParameters
+{
   constexpr static int game_width = 800;
   constexpr static int game_height = 600;
 
