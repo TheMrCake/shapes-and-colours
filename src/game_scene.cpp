@@ -2,12 +2,13 @@
 // Created by deborah ama on 03/12/2025.
 //
 
-#include "game_scene.hpp"
-#include "pause_menu.hpp"
+// STD includes
 #include <cmath>
 #include <iostream>
-#include <objc/objc.h>
 
+// Local Includes
+#include "game_scene.hpp"
+#include "pause_menu.hpp"
 #include "game_objects/entities.hpp"
 #include "managers/entity_manager.hpp"
 
