@@ -6,7 +6,6 @@
 #include "pause_menu.hpp"
 #include <cmath>
 #include <iostream>
-#include <objc/objc.h>
 
 #include "game_objects/entities.hpp"
 #include "managers/entity_manager.hpp"
