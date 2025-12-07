@@ -14,3 +14,17 @@ int main()
         return -1;
         
 }
+
+class MyMusic
+{
+public:
+    MyMusic(sf::Music&& music) : m_music(std::move(music))
+    {
+        
+    }
+
+private:
+    sf::Music m_music;
+};
+
+sf::Music music("ding.mp3");
