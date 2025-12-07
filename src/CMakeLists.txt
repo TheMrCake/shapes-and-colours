@@ -22,19 +22,17 @@ add_executable(
   # Utils
   utils/b2d_utils.cpp
   utils/color_utils.cpp
-        game_objects/crystal_entity.hpp
-        systems/crystal_system.hpp
-        systems/crystal_system.cpp
-        game_objects/components/crystal_component.cpp
-        game_objects/components/light_beam_component.hpp
-        systems/light_system.cpp)
+  game_objects/crystal_entity.hpp
+  systems/crystal_system.hpp
+  systems/crystal_system.cpp
+  game_objects/components/crystal_component.cpp
+  game_objects/components/light_beam_component.hpp
+  systems/light_system.cpp)
 
+# Libraries
 target_include_directories(
   ${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} lib/SFML/include
                           lib/box2d/include)
-# target_include_directories( ${PROJECT_NAME} PRIVATE
-# ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include
-# lib/box2d/include )
 target_link_libraries(${PROJECT_NAME} box2d sfml-graphics sfml-window
                       sfml-system)
 
