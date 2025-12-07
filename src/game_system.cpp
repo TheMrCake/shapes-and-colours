@@ -25,7 +25,6 @@ GameSystem::GameSystem(sf::Vector2u window_size)
   , saved_game_scene(nullptr)
   ,in_game(false)
   , running(true) {
-  std::cout << "GameSystem initialized\n";
 
 }
 
@@ -36,7 +35,6 @@ void GameSystem::init() {
 void GameSystem::update(const float dt) {
     // Safety check
     if (!current_scene) {
-        std::cout << "No current scene, stopping\n";
         running = false;
         return;
     }
@@ -47,10 +45,8 @@ void GameSystem::update(const float dt) {
     // Check for scene transitions
     Scene* next = current_scene->nextScene();
     if (next != current_scene.get()) {
-        std::cout << "Scene transition detected\n";
 
         if (next == nullptr) {
-            std::cout << "Exit signal received\n";
             running = false;
             current_scene.reset();
             return;
@@ -58,29 +54,23 @@ void GameSystem::update(const float dt) {
 
         // Check what type of scene we're transitioning to
         if (GameScene* gameScene = dynamic_cast<GameScene*>(next)) {
-            std::cout << "Transitioning to GameScene\n";
             in_game = true;
 
             // Check if this is our saved game scene being returned from pause
             if (saved_game_scene && saved_game_scene.get() == gameScene) {
-                std::cout << "Returning to saved GameScene from pause\n";
                 // Move saved_game_scene back to current_scene
                 current_scene = std::move(saved_game_scene);
             } else {
                 // New game scene from start menu
-                std::cout << "New GameScene created\n";
                 current_scene.reset(gameScene);
             }
         } else if (dynamic_cast<StartMenuScene*>(next)) {
-            std::cout << "Transitioning to StartMenuScene\n";
             in_game = false;
             saved_game_scene.reset(); // Clear saved game when returning to menu
             current_scene.reset(next);
         } else if (dynamic_cast<PauseMenuScene*>(next)) {
-            std::cout << "Transitioning to PauseMenuScene\n";
             // Save the current GameScene before switching to pause menu
             if (GameScene* gameScene = dynamic_cast<GameScene*>(current_scene.get())) {
-                std::cout << "Saving GameScene\n";
                 // Move current_scene to saved_game_scene
                 saved_game_scene.reset(dynamic_cast<GameScene*>(current_scene.release()));
             }
@@ -127,7 +117,6 @@ void GameSystem::render(sf::RenderWindow& window) {
 void GameSystem::handle_event(sf::Event event) {
     if (!current_scene) return;
 
-    std::cout << "GameSystem handle_event, type: " << event.type << "\n";
 
     current_scene->handleEvent(event);
 

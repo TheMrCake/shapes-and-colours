@@ -15,11 +15,9 @@
 GameScene::GameScene(sf::Vector2u windowSize, EntityManager& em)
     : m_next(this), windowSize(windowSize), entityManager(em), lightSystem(em), paused(false)
 {
-    std::cout << "GameScene constructor called\n";
 
     // Load bulb texture
     if (!bulbTexture.loadFromFile("resources/bulbling.png")) {
-        std::cerr << "Failed to load bulb image\n";
     }
     bulbSprite.setTexture(bulbTexture);
     bulbSprite.setOrigin(bulbTexture.getSize().x / 2.f, bulbTexture.getSize().y / 2.f);
@@ -42,19 +40,14 @@ GameScene::GameScene(sf::Vector2u windowSize, EntityManager& em)
 
     // Create light beam
     beamId = create_light_ray(entityManager, windowSize, sf::Vector2f(-1.f, 1.f));
-    std::cout << "Light beam created with ID: " << beamId << "\n";
 
     // Verify the light beam was created
     if (auto lightOpt = entityManager.get_entity_component<Light>(beamId)) {
-        std::cout << "Light component found!\n";
     } else {
-        std::cout << "ERROR: Light component NOT found!\n";
     }
 
     if (auto shapeOpt = entityManager.get_entity_component<Shape>(beamId)) {
-        std::cout << "Shape component found, visible: " << (*shapeOpt)->visible << "\n";
     } else {
-        std::cout << "ERROR: Shape component NOT found!\n";
     }
 
     // Setup border
@@ -66,21 +59,17 @@ GameScene::GameScene(sf::Vector2u windowSize, EntityManager& em)
 }
 
 void GameScene::handleEvent(const sf::Event& event) {
-    std::cout << "GameScene handleEvent, paused: " << paused << "\n";
 
     // Handle pause/unpause
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
         if (!paused) {
-            std::cout << "Pausing game...\n";
             paused = true;
 
             // Hide all light beam shapes
             auto& lights = entityManager.get_component_map<Light>();
-            std::cout << "Number of lights to hide: " << lights.size() << "\n";
             for (auto& [id, lightPtr] : lights) {
                 if (auto shapeOpt = entityManager.get_entity_component<Shape>(id)) {
                     (*shapeOpt)->visible = false;
-                    std::cout << "Hidden light shape for entity " << id << "\n";
                 }
             }
             m_next = new PauseMenuScene(windowSize, entityManager, this);
@@ -90,7 +79,6 @@ void GameScene::handleEvent(const sf::Event& event) {
 
     // Don't process game controls when paused
     if (paused) {
-        std::cout << "Game is paused, ignoring input\n";
         return;
     }
 
@@ -151,17 +139,14 @@ void GameScene::update(float dt) {
 }
 
 void GameScene::resumeGame() {
-    std::cout << "Resuming game...\n";
     paused = false;
     m_next = this;
 
     // Show all light beam shapes again
     auto& lights = entityManager.get_component_map<Light>();
-    std::cout << "Number of lights to show: " << lights.size() << "\n";
     for (auto& [id, lightPtr] : lights) {
         if (auto shapeOpt = entityManager.get_entity_component<Shape>(id)) {
             (*shapeOpt)->visible = true;
-            std::cout << "Showed light shape for entity " << id << "\n";
         }
     }
 }
@@ -184,7 +169,6 @@ void GameScene::render(sf::RenderWindow& window) {
     // Only log occasionally to avoid spam
     static int frameCount = 0;
     if (frameCount++ % 60 == 0) {
-        std::cout << "Rendering " << visibleCount << " visible shapes out of " << shapes.size() << " total\n";
     }
 }
 

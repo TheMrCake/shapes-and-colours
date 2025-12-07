@@ -44,36 +44,28 @@ PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager& em, GameS
     m_quitText.setOrigin(quitBounds.width / 2.f, quitBounds.height / 2.f);
     m_quitText.setPosition(windowSize.x / 2.f, windowSize.y / 2.f + 70.f);
 
-    std::cout << "PauseMenuScene created\n";
 }
 
 void PauseMenuScene::handleEvent(const sf::Event& event) {
-    std::cout << "PauseMenu handleEvent called, type: " << event.type << "\n";
 
     if (event.type == sf::Event::KeyPressed) {
-        std::cout << "Key pressed: " << event.key.code << "\n";
 
         // Navigate menu
         if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Down) {
             m_selectedIndex = 1 - m_selectedIndex;
             updateSelection();
-            std::cout << "Selection changed to: " << m_selectedIndex << "\n";
         }
         // Select option
         else if (event.key.code == sf::Keyboard::Return) {
-            std::cout << "Return pressed, selected index: " << m_selectedIndex << "\n";
             if (m_selectedIndex == 0) {
                 m_resumeSelected = true;
-                std::cout << "Resume selected!\n";
             } else {
                 m_quitSelected = true;
-                std::cout << "Quit selected!\n";
             }
         }
         // ESC also resumes
         else if (event.key.code == sf::Keyboard::Escape) {
             m_resumeSelected = true;
-            std::cout << "ESC pressed, resuming!\n";
         }
     }
 }
@@ -81,10 +73,8 @@ void PauseMenuScene::handleEvent(const sf::Event& event) {
 void PauseMenuScene::update(float dt) {
     // Check flags immediately in update
     if (m_resumeSelected) {
-        std::cout << "Update: Resume flag is true\n";
     }
     if (m_quitSelected) {
-        std::cout << "Update: Quit flag is true\n";
     }
 }
 
@@ -106,11 +96,8 @@ void PauseMenuScene::render(sf::RenderWindow& window) {
 }
 
 Scene* PauseMenuScene::nextScene() {
-    std::cout << "nextScene called - resumeSelected: " << m_resumeSelected
-              << ", quitSelected: " << m_quitSelected << "\n";
 
     if (m_resumeSelected) {
-        std::cout << "Resuming game!\n";
         m_resumeSelected = false;
         if (gameScene) {
             gameScene->resumeGame();
@@ -119,7 +106,6 @@ Scene* PauseMenuScene::nextScene() {
     }
 
     if (m_quitSelected) {
-        std::cout << "Quitting to menu!\n";
         m_quitSelected = false;
 
         auto& lights = entityManager.get_component_map<Light>();
