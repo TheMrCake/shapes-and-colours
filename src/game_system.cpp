@@ -143,6 +143,7 @@ void GameSystem::update(const float dt) {
         if (GameScene* gameScene = dynamic_cast<GameScene*>(next)) {
             std::cout << "Transitioning to GameScene\n";
             in_game = true;
+            current_scene.reset(next);
 
         } else if (dynamic_cast<StartMenuScene*>(next)) {
             std::cout << "Transitioning to StartMenuScene\n";
@@ -159,6 +160,7 @@ void GameSystem::update(const float dt) {
             // Now set the pause menu as current
             current_scene.reset(next);
         }
+
     }
 
     // Only update game systems when in game and not paused
