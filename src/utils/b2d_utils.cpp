@@ -2,7 +2,6 @@
 
 // STD includes
 #include <cmath>
-#include <iostream>
 
 // Box2d includes
 #include "SFML/System/Vector2.hpp"
@@ -133,7 +132,6 @@ b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
     shape_def.material.restitution = GameParameters::default_restitution;
     b2Circle circle{{}, radius};
 
-    std::cout << center_position.x << " " << center_position.y << std::endl; 
     b2CreateCircleShape(body_id, &shape_def, &circle);
 
     return body_id;
