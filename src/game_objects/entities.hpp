@@ -8,7 +8,7 @@
 #include "game_objects/entity.hpp"
 #include "managers/entity_manager.hpp"
 
-using LightCrystal = Entity<Transform, Crystal, Shape>;
+using LightCrystal = Entity<Transform, Crystal, Shape, Physics>;
 using LightRay = Entity<Transform, Light, Shape>;
 using LightEmitter = Entity<Physics, Transform>;
 using Player = Entity<Physics, Transform, Input, Sprite>;

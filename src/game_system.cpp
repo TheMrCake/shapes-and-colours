@@ -1,13 +1,13 @@
 #include "game_system.hpp"
 
 // STD includes
-#include <cassert>
-#include <cstdio>
 #include <memory>
 #include <iostream>
 
 // Local includes
+#include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/ConvexShape.hpp"
+#include "game_objects/components/physics_component.hpp"
 #include "game_objects/components/shape_component.hpp"
 #include "game_objects/components/sprite_component.hpp"
 #include "game_objects/entities.hpp"
@@ -18,6 +18,7 @@
 #include "start_menu_scene.hpp"
 #include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
+#include "utils/b2d_utils.hpp"
 
 GameSystem::GameSystem()
     : entity_manager(),
@@ -35,6 +36,11 @@ GameSystem::GameSystem()
 
 void GameSystem::start_game() {
     EntityId player = entity_manager.make_entity<Player>();
+
+    if (auto player_physics_comp = entity_manager.get_entity_component<Physics>(player);
+        player_physics_comp.has_value()) {
+        player_physics_comp.value()->body_id = Box2DUtils::create_physics_circle(physics_system.get_world_id(), true, sf::CircleShape(2));
+    }
 
     auto player_sprite_comp = entity_manager.get_entity_component<Sprite>(player);
 
@@ -62,6 +68,9 @@ void GameSystem::start_game() {
     // Setup crystal
 
     EntityId crystal = entity_manager.make_entity<LightCrystal>();
+
+    auto crystal_physics_comp = entity_manager.get_entity_component<Physics>(crystal);
+    crystal_physics_comp.value()->body_id = Box2DUtils::create_physics_circle(physics_system.get_world_id(), false, sf::CircleShape(2));
 
     auto crystal_shape_comp = entity_manager.get_entity_component<Shape>(crystal);
     crystal_shape_comp.value()->shape = std::make_unique<sf::ConvexShape>();

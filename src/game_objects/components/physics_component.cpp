@@ -7,4 +7,5 @@ Physics::Physics()
     : Component<Physics>(INVALID_ENTITY_ID) {}
 
 Physics::Physics(EntityId entity_id)
-    : Component<Physics>(entity_id) {}
+    : Component<Physics>(entity_id),
+      body_id() {}
