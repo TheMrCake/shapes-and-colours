@@ -17,4 +17,6 @@ struct GameParameters {
     constexpr static float default_density = 10.f;
     constexpr static float default_friction = 0.8f;
     constexpr static float default_restitution = 1.0f;
+
+    constexpr static float character_speed = 200.f;
 };

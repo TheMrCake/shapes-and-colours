@@ -4,6 +4,7 @@
 #include <cmath>
 
 // Box2d includes
+#include "SFML/System/Vector2.hpp"
 #include "box2d/box2d.h"
 #include "box2d/collision.h"
 #include "box2d/math_functions.h"
@@ -67,7 +68,8 @@ const float Box2DUtils::magnitude(const sf::Vector2f& in) {
 
 // Normalise sfml vector
 const sf::Vector2f Box2DUtils::normalize(const sf::Vector2f& in) {
-    return in / magnitude(in);
+    const float mag = magnitude(in);
+    return mag > 0.001f ? in / mag : sf::Vector2f(0.f, 0.f);
 }
 
 // Create box2d rectangle

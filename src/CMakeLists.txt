@@ -13,19 +13,20 @@ add_executable(
   game_objects/components/shape_component.cpp
   game_objects/components/sprite_component.cpp
   game_objects/components/transform_component.cpp
+  game_objects/components/crystal_component.cpp
   # Systems
   systems/system.cpp
+  systems/movement_system.cpp
   systems/physics_system.cpp
   systems/input_system.cpp
+  systems/light_system.cpp
+  systems/crystal_system.cpp
   # Managers
   managers/entity_manager.cpp
   managers/resource_manager.cpp
   # Utils
   utils/b2d_utils.cpp
-  utils/color_utils.cpp
-  systems/crystal_system.cpp
-  game_objects/components/crystal_component.cpp
-  systems/light_system.cpp)
+  utils/color_utils.cpp)
 
 # Libraries
 target_include_directories(

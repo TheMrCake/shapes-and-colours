@@ -9,6 +9,7 @@
 #include "scene.hpp"
 #include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
+#include "systems/movement_system.hpp"
 #include <memory>
 
 #include "systems/crystal_system.hpp"
@@ -37,5 +38,6 @@ private:
     InputSystem input_system;
     CrystalSystem crystal_system;
     LightSystem light_system;
+    MovementSystem movement_system;
     std::unique_ptr<Scene> current_scene;
 };
