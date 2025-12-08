@@ -19,14 +19,12 @@ add_executable(
   systems/input_system.cpp
   # Managers
   managers/entity_manager.cpp
+  managers/resource_manager.cpp
   # Utils
   utils/b2d_utils.cpp
   utils/color_utils.cpp
-  game_objects/crystal_entity.hpp
-  systems/crystal_system.hpp
   systems/crystal_system.cpp
   game_objects/components/crystal_component.cpp
-  game_objects/components/light_beam_component.hpp
   systems/light_system.cpp)
 
 # Libraries
