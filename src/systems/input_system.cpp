@@ -10,15 +10,15 @@
 #include "utils/b2d_utils.hpp"
 #include <iostream>
 
-InputSystem::InputSystem(EntityManager &entity_manager)
+InputSystem::InputSystem(EntityManager& entity_manager)
     : System(entity_manager) {}
 
 void InputSystem::update(const float delta_time) {
-    ComponentMap<Input> &input_component_map =
+    ComponentMap<Input>& input_component_map =
         entity_manager.get_component_map<Input>();
-    for (auto &[entity_id, input_component] : input_component_map) {
+    for (auto& [entity_id, input_component] : input_component_map) {
 
-        sf::Vector2f &input_vec = input_component->input_direction;
+        sf::Vector2f& input_vec = input_component->input_direction;
         input_vec = {0.f, 0.f};
         // Horizontal Input
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
@@ -62,10 +62,10 @@ void InputSystem::handle_event(sf::Event event) {
         break;
     }
 
-    ComponentMap<Input> &input_component_map =
+    ComponentMap<Input>& input_component_map =
         entity_manager.get_component_map<Input>();
 
-    for (auto &[entity_id, input_component] : input_component_map) {
+    for (auto& [entity_id, input_component] : input_component_map) {
         input_component->possess_pressed = new_input_component.possess_pressed;
     }
 }

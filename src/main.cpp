@@ -6,13 +6,12 @@
 // Local includes
 #include "game_parameters.hpp"
 #include "game_system.hpp"
-#include "start_menu_scene.hpp"
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Scene System");
+    sf::RenderWindow window(sf::VideoMode(GameParameters::game_width, GameParameters::game_height), "Scene System");
     window.setFramerateLimit(60);
 
-    GameSystem game_system{window.getSize()};
+    GameSystem game_system{};
     sf::Clock clock;
 
     while (window.isOpen() && game_system.running) {

@@ -6,7 +6,7 @@
 // SFML includes
 #include "SFML/Graphics/Color.hpp"
 
-sf::Color ColorUtils::wavelength_to_color(const float &wavelength) {
+sf::Color ColorUtils::wavelength_to_color(const float& wavelength) {
     // Use namepsace
     using namespace ColorUtils;
 

@@ -4,7 +4,7 @@
 #include "SFML/Graphics/Color.hpp"
 
 namespace ColorUtils {
-    sf::Color wavelength_to_color(const float &wavelength);
+    sf::Color wavelength_to_color(const float& wavelength);
 
     // Gaussian Parameters in nanometers
     // RED

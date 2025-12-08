@@ -21,7 +21,7 @@ template <typename ComponentType>
 using ComponentPtr = std::unique_ptr<ComponentType>;
 
 template <typename ComponentType>
-using ComponentWeakPtr = ComponentType *;
+using ComponentWeakPtr = ComponentType*;
 
 template <typename ComponentType,
           typename = std::enable_if<is_component_v<ComponentType>>>
@@ -46,24 +46,24 @@ public:
     EntityManager();
 
     // Non-copyable
-    EntityManager(const EntityManager &) = delete;
-    EntityManager &operator=(const EntityManager &) = delete;
+    EntityManager(const EntityManager&) = delete;
+    EntityManager& operator=(const EntityManager&) = delete;
 
     // Movable
-    EntityManager(EntityManager &&) = default;
-    EntityManager &operator=(EntityManager &&) = default;
+    EntityManager(EntityManager&&) = default;
+    EntityManager& operator=(EntityManager&&) = default;
 
     // Return all components of a specific type
     template <typename ComponentType>
-    ComponentMap<ComponentType> &get_component_map() {
-        return static_cast<ComponentPool<ComponentType> *>(this)->components;
+    ComponentMap<ComponentType>& get_component_map() {
+        return static_cast<ComponentPool<ComponentType>*>(this)->components;
     }
 
     template <typename ComponentType>
     std::optional<ComponentWeakPtr<ComponentType>>
-    get_entity_component(EntityId entity_id) {
-        ComponentMap<ComponentType> &component_map =
-            static_cast<ComponentPool<ComponentType> *>(this)->components;
+    get_entity_component(const EntityId entity_id) {
+        ComponentMap<ComponentType>& component_map =
+            get_component_map<ComponentType>();
         if (auto it = component_map.find(entity_id);
             it != component_map.end()) {
             return it->second.get();
@@ -100,20 +100,21 @@ public:
 
 private:
     template <typename... ComponentTypes>
-    void add_components_to_pool(EntityId id) {
+    void add_components_to_pool(const EntityId id) {
         (add_single_component_to_pool<ComponentTypes>(id), ...);
     }
 
     template <typename ComponentType>
     void add_single_component_to_pool(EntityId id) {
-        ComponentMap<ComponentType> &map = get_component_map<ComponentType>();
+        ComponentMap<ComponentType>& map = get_component_map<ComponentType>();
         map.emplace(id, std::make_unique<ComponentType>(id));
     }
 
     template <typename ComponentType>
-    void remove_from_pool(EntityId id) {
-        auto &map = get_component_map<ComponentType>();
+    void remove_from_pool(const EntityId id) {
+        auto& map = get_component_map<ComponentType>();
         map.erase(id);
     }
+
     EntityId next_id;
 };

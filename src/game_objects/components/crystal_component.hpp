@@ -4,7 +4,6 @@
 
 #pragma once
 #include "game_objects/entity.hpp"
-#include "game_parameters.hpp"
 
 struct Crystal : Component<Crystal> {
     Crystal();

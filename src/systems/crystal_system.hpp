@@ -8,7 +8,7 @@
 
 class CrystalSystem : public System {
 public:
-    explicit CrystalSystem(EntityManager &entity_manager);
+    explicit CrystalSystem(EntityManager& entity_manager);
 
     void update(float delta_time) override;
 };

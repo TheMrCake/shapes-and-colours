@@ -3,24 +3,21 @@
 //
 #pragma once
 
-// STD includes
-#include <iostream>
-
 // SFML includes
 #include <SFML/Graphics.hpp>
 
 // Local includes
-#include "managers/entity_manager.hpp"
+#include "game_system.hpp"
 #include "scene.hpp"
 
 class StartMenuScene : public Scene {
 public:
-    StartMenuScene(sf::Vector2u windowSize, EntityManager &em);
+    StartMenuScene(GameSystem& game_system);
 
-    void handleEvent(const sf::Event &event) override;
+    void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
-    void render(sf::RenderWindow &window) override;
-    Scene *nextScene() override;
+    void render(sf::RenderWindow& window) override;
+    Scene* nextScene() override;
 
 private:
     sf::Font m_font;
@@ -29,8 +26,7 @@ private:
     sf::Text m_quitText;
 
     int m_selectedIndex;
-    Scene *m_next;
+    Scene* m_next;
 
-    sf::Vector2u m_windowSize;
-    EntityManager &entityManager;
+    GameSystem& game_system;
 };

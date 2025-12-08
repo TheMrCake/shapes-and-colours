@@ -4,18 +4,16 @@
 
 #include "pause_menu.hpp"
 #include "game_scene.hpp"
-#include "managers/entity_manager.hpp"
 #include "start_menu_scene.hpp"
 #include <iostream>
 
-PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager &em,
-                               GameScene *gameScene)
+PauseMenuScene::PauseMenuScene(GameSystem& game_system,
+                               GameScene* gameScene)
     : m_selectedIndex(0),
       m_resumeSelected(false),
       m_quitSelected(false),
       m_next(this),
-      windowSize(windowSize),
-      entityManager(em),
+      game_system(game_system),
       gameScene(gameScene) {
     // Load font
     if (!m_font.loadFromFile("resources/ScienceGothic.ttf")) {
@@ -52,7 +50,7 @@ PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager &em,
     std::cout << "PauseMenuScene created\n";
 }
 
-void PauseMenuScene::handleEvent(const sf::Event &event) {
+void PauseMenuScene::handleEvent(const sf::Event& event) {
     std::cout << "PauseMenu handleEvent called, type: " << event.type << "\n";
 
     if (event.type == sf::Event::KeyPressed) {
@@ -95,7 +93,7 @@ void PauseMenuScene::update(float dt) {
     }
 }
 
-void PauseMenuScene::render(sf::RenderWindow &window) {
+void PauseMenuScene::render(sf::RenderWindow& window) {
     // Draw the game scene in the background (frozen)
     if (gameScene) {
         gameScene->render(window);
@@ -112,7 +110,7 @@ void PauseMenuScene::render(sf::RenderWindow &window) {
     window.draw(m_quitText);
 }
 
-Scene *PauseMenuScene::nextScene() {
+Scene* PauseMenuScene::nextScene() {
     std::cout << "nextScene called - resumeSelected: " << m_resumeSelected
               << ", quitSelected: " << m_quitSelected << "\n";
 
@@ -129,16 +127,8 @@ Scene *PauseMenuScene::nextScene() {
         std::cout << "Quitting to menu!\n";
         m_quitSelected = false;
 
-        auto &lights = entityManager.get_component_map<Light>();
-        std::vector<EntityId> entitiesToRemove;
-        for (auto &[id, lightPtr] : lights) {
-            entitiesToRemove.push_back(id);
-        }
-        for (EntityId id : entitiesToRemove) {
-            entityManager.remove_entity(id);
-        }
 
-        return new StartMenuScene(windowSize, entityManager);
+        return new StartMenuScene(game_system);
     }
 
     return this;

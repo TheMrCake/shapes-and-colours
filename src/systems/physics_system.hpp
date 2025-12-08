@@ -9,7 +9,7 @@
 
 class PhysicsSystem : System {
 public:
-    PhysicsSystem(EntityManager &entity_manager);
+    PhysicsSystem(EntityManager& entity_manager);
 
     virtual void update(const float delta_time) override;
 

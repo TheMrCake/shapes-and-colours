@@ -15,14 +15,14 @@
 
 // Convert from b2Transform to a transform_info
 const transform_info
-Box2DUtils::btransform_to_transform_info(const b2Transform &transform) {
+Box2DUtils::btransform_to_transform_info(const b2Transform& transform) {
     return transform_info{invert_height(bv2_to_sv2(transform.p)),
                           rad_to_deg(std::asin(transform.q.s))};
 }
 
 // Convert from transform_info to a b2Transform
 const b2Transform
-Box2DUtils::transform_info_to_btransform(const transform_info &transform) {
+Box2DUtils::transform_info_to_btransform(const transform_info& transform) {
     const float rotation_rad = deg_to_rad(transform.rotation_deg);
 
     return b2Transform{sv2_to_bv2(invert_height(transform.position)),
@@ -40,42 +40,42 @@ const float Box2DUtils::deg_to_rad(const float deg) {
 }
 
 // Convert from b2Vec2 to a Vector2f
-const sf::Vector2f Box2DUtils::bv2_to_sv2(const b2Vec2 &in) {
+const sf::Vector2f Box2DUtils::bv2_to_sv2(const b2Vec2& in) {
     return {in.x * GameParameters::physics_scale,
             (in.y * GameParameters::physics_scale)};
 }
 
 // Convert from Vector2f to a b2Vec2
-const b2Vec2 Box2DUtils::sv2_to_bv2(const sf::Vector2f &in) {
+const b2Vec2 Box2DUtils::sv2_to_bv2(const sf::Vector2f& in) {
     return {in.x * GameParameters::physics_scale_inv,
             in.y * GameParameters::physics_scale_inv};
 }
 
 // Convert between screenspace.y to physics.y
-const sf::Vector2f Box2DUtils::invert_height(const sf::Vector2f &in) {
+const sf::Vector2f Box2DUtils::invert_height(const sf::Vector2f& in) {
     return sf::Vector2f(in.x, GameParameters::game_height - in.y);
 }
 
 // Get magnitude of the sfml vector
-const float Box2DUtils::magnitude_squared(const sf::Vector2f &in) {
+const float Box2DUtils::magnitude_squared(const sf::Vector2f& in) {
     return (in.x * in.x) + (in.y * in.y);
 }
 
 // Get magnitude of the sfml vector
-const float Box2DUtils::magnitude(const sf::Vector2f &in) {
+const float Box2DUtils::magnitude(const sf::Vector2f& in) {
     return std::sqrt(magnitude_squared(in));
 }
 
 // Normalise sfml vector
-const sf::Vector2f Box2DUtils::normalize(const sf::Vector2f &in) {
+const sf::Vector2f Box2DUtils::normalize(const sf::Vector2f& in) {
     return in / magnitude(in);
 }
 
 // Create box2d rectangle
-b2BodyId Box2DUtils::create_physics_rect(b2WorldId &world_id,
+b2BodyId Box2DUtils::create_physics_rect(b2WorldId& world_id,
                                          const bool dynamic,
-                                         const sf::Vector2f &position,
-                                         const sf::Vector2f &size) {
+                                         const sf::Vector2f& position,
+                                         const sf::Vector2f& size) {
     b2BodyDef body_def = b2DefaultBodyDef();
 
     // Is Dynamic(moving), or static(Stationary)
@@ -97,17 +97,17 @@ b2BodyId Box2DUtils::create_physics_rect(b2WorldId &world_id,
 }
 
 // Create box2d rectangle with sfml rectangle
-b2BodyId Box2DUtils::create_physics_rect(b2WorldId &world_id,
+b2BodyId Box2DUtils::create_physics_rect(b2WorldId& world_id,
                                          const bool dynamic,
-                                         const sf::RectangleShape &rs) {
+                                         const sf::RectangleShape& rs) {
     return create_physics_rect(world_id, dynamic, rs.getPosition(),
                                rs.getSize());
 }
 
 // Create box2d circle
-b2BodyId Box2DUtils::create_physics_circle(b2WorldId &world_id,
+b2BodyId Box2DUtils::create_physics_circle(b2WorldId& world_id,
                                            const bool dynamic,
-                                           const sf::Vector2f &center_position,
+                                           const sf::Vector2f& center_position,
                                            const float radius) {
     b2BodyDef body_def = b2DefaultBodyDef();
 
@@ -132,9 +132,9 @@ b2BodyId Box2DUtils::create_physics_circle(b2WorldId &world_id,
 }
 
 // Create box2d circle with sfml circle
-b2BodyId Box2DUtils::create_physics_circle(b2WorldId &world_id,
+b2BodyId Box2DUtils::create_physics_circle(b2WorldId& world_id,
                                            const bool dynamic,
-                                           const sf::CircleShape &cs) {
+                                           const sf::CircleShape& cs) {
     return create_physics_circle(world_id, dynamic, cs.getPosition(),
                                  cs.getRadius());
 }

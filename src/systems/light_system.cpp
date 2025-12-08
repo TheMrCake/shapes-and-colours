@@ -3,46 +3,48 @@
 //
 
 #include "systems/light_system.hpp"
-#include "game_objects/components/crystal_component.hpp"
+
+// STD includes
+#include <cmath>
+
+// Local includes
 #include "game_objects/components/light_component.hpp"
 #include "game_objects/components/transform_component.hpp"
-
-#include <cmath>
-#include <iostream>
+#include "utils/b2d_utils.hpp"
 
 void LightSystem::update(float dt) {
-    auto &rays = entity_manager.get_component_map<Light>();
-    for (auto &[id, rayPtr] : rays) {
-        Light &ray = *rayPtr;
+    auto& rays = entity_manager.get_component_map<Light>();
+    for (auto& [id, ray_ptr] : rays) {
+        Light& ray = *ray_ptr;
 
-        if (auto shapeOpt = entity_manager.get_entity_component<Shape>(id)) {
-            Shape *rayShape = *shapeOpt;
+        if (auto shape_opt = entity_manager.get_entity_component<Shape>(id)) {
+            Shape* ray_shape = *shape_opt;
 
-            // ⬇️ Skip updating if it's hidden
-            if (!rayShape->visible)
+            // Skip updating if it's hidden
+            if (!ray_shape->visible)
                 continue;
         }
 
-        float currentAngle = std::atan2(ray.direction.y, ray.direction.x);
+        float current_angle = std::atan2(ray.direction.y, ray.direction.x);
 
-        float rotationSpeedDeg = 90.f; // degrees per second
-        float rotationSpeedRad = rotationSpeedDeg * M_PI / 180.f;
+        float rotation_speed_deg = 90.f; // degrees per second
+        float rotation_speed_rad = Box2DUtils::deg_to_rad(rotation_speed_deg);
 
         if (ray.rotatingLeft)
-            currentAngle -= rotationSpeedRad * dt;
+            current_angle -= rotation_speed_rad * dt;
         if (ray.rotatingRight)
-            currentAngle += rotationSpeedRad * dt;
+            current_angle += rotation_speed_rad * dt;
 
-        ray.direction = {std::cos(currentAngle), std::sin(currentAngle)};
+        ray.direction = {std::cos(current_angle), std::sin(current_angle)};
         if (auto transformOpt =
                 entity_manager.get_entity_component<Transform>(id)) {
-            Transform *transform = *transformOpt;
+            Transform* transform = *transformOpt;
 
             if (auto shapeOpt =
                     entity_manager.get_entity_component<Shape>(id)) {
-                Shape *shapeComp = *shapeOpt;
+                Shape* shapeComp = *shapeOpt;
                 if (shapeComp->shape) {
-                    if (auto *rect = dynamic_cast<sf::RectangleShape *>(
+                    if (auto* rect = dynamic_cast<sf::RectangleShape*>(
                             shapeComp->shape.get())) {
                         rect->setPosition(transform->transform.position);
 

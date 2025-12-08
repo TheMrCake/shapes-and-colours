@@ -3,10 +3,12 @@
 // Local includes
 #include "SFML/Graphics/Sprite.hpp"
 #include "game_objects/entity.hpp"
+#include "managers/resource_manager.hpp"
 
 struct Sprite : Component<Sprite> {
     Sprite();
     Sprite(EntityId entity_id);
 
     sf::Sprite sprite;
+    ResourceId resource_id;
 };

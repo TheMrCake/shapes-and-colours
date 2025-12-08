@@ -7,11 +7,11 @@
 
 class LightSystem : public System {
 public:
-    explicit LightSystem(EntityManager &em)
+    explicit LightSystem(EntityManager& em)
         : System(em),
           entityManager(em) {}
     void update(float dt) override;
 
 private:
-    EntityManager &entityManager;
+    EntityManager& entityManager;
 };

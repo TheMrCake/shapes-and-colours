@@ -3,21 +3,24 @@
 //
 
 #pragma once
-#include "scene.hpp"
+
+// SFML includes
 #include <SFML/Graphics.hpp>
 
+// Local includes
+#include "game_system.hpp"
+#include "scene.hpp"
 #include "game_scene.hpp"
-#include "managers/entity_manager.hpp"
 
 class PauseMenuScene : public Scene {
 public:
-    PauseMenuScene(sf::Vector2u windowSize, EntityManager &em,
-                   GameScene *gameScene);
+    PauseMenuScene(GameSystem& game_system,
+                   GameScene* gameScene);
 
-    void handleEvent(const sf::Event &event) override;
+    void handleEvent(const sf::Event& event) override;
     void update(float dt) override;
-    void render(sf::RenderWindow &window) override;
-    Scene *nextScene() override;
+    void render(sf::RenderWindow& window) override;
+    Scene* nextScene() override;
 
 private:
     sf::Font m_font;
@@ -29,11 +32,11 @@ private:
     bool m_resumeSelected;
     bool m_quitSelected;
 
-    Scene *m_next;
+    Scene* m_next;
     sf::Vector2u windowSize;
 
-    EntityManager &entityManager;
-    GameScene *gameScene;
+    GameSystem& game_system;
+    GameScene* gameScene;
     // PauseMenuScene(sf::Vector2u windowSize, EntityManager &em);
 
     // void handleEvent(const sf::Event &event);
