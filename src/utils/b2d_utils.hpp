@@ -16,6 +16,8 @@ struct transform_info {
 };
 
 namespace Box2DUtils {
+    static constexpr float epsilon = 0.001f; 
+
     // Convert from b2Transform to a transform_info
     const transform_info
     btransform_to_transform_info(const b2Transform& transform);
@@ -43,16 +45,24 @@ namespace Box2DUtils {
     const sf::Vector2f normalize(const sf::Vector2f& in);
 
     // Create a Box2D rectangle body
-    b2BodyId create_physics_rect(const b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_rect(const b2WorldId& world_id,
+                                 const bool dynamic,
+                                 const bool rotation_locked,
                                  const sf::Vector2f& position,
                                  const sf::Vector2f& size);
-    b2BodyId create_physics_rect(const b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_rect(const b2WorldId& world_id,
+                                 const bool dynamic,
+                                 const bool rotation_locked,
                                  const sf::RectangleShape& rs);
 
     // Create a Box2D circle body
-    b2BodyId create_physics_circle(const b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_circle(const b2WorldId& world_id,
+                                   const bool dynamic,
+                                   const bool rotation_locked,
                                    const sf::Vector2f& position,
                                    const float radius);
-    b2BodyId create_physics_circle(const b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_circle(const b2WorldId& world_id,
+                                   const bool dynamic,
+                                   const bool rotation_locked,
                                    const sf::CircleShape& rs);
 } // namespace Box2DUtils

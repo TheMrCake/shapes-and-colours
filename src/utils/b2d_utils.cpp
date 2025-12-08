@@ -2,6 +2,7 @@
 
 // STD includes
 #include <cmath>
+#include <iostream>
 
 // Box2d includes
 #include "SFML/System/Vector2.hpp"
@@ -41,14 +42,14 @@ const float Box2DUtils::deg_to_rad(const float deg) {
 
 // Convert from b2Vec2 to a Vector2f
 const sf::Vector2f Box2DUtils::bv2_to_sv2(const b2Vec2& in) {
-    return {in.x * GameParameters::physics_scale,
-            (in.y * GameParameters::physics_scale)};
+    return { in.x * in.x > Box2DUtils::epsilon ? in.x * GameParameters::physics_scale : 0.0f,
+            in.y * in.y > Box2DUtils::epsilon ? in.y * GameParameters::physics_scale : 0.0f};
 }
 
 // Convert from Vector2f to a b2Vec2
 const b2Vec2 Box2DUtils::sv2_to_bv2(const sf::Vector2f& in) {
-    return {in.x * GameParameters::physics_scale_inv,
-            in.y * GameParameters::physics_scale_inv};
+    return { in.x * in.x > Box2DUtils::epsilon ? in.x * GameParameters::physics_scale_inv : 0.0f,
+            in.y * in.y > Box2DUtils::epsilon ? in.y  * GameParameters::physics_scale_inv : 0.0f};
 }
 
 // Convert between screenspace.y to physics.y
@@ -69,12 +70,13 @@ const float Box2DUtils::magnitude(const sf::Vector2f& in) {
 // Normalise sfml vector
 const sf::Vector2f Box2DUtils::normalize(const sf::Vector2f& in) {
     const float mag = magnitude(in);
-    return mag > 0.001f ? in / mag : sf::Vector2f(0.f, 0.f);
+    return mag > Box2DUtils::epsilon ? in / mag : sf::Vector2f(0.f, 0.f);
 }
 
 // Create box2d rectangle
 b2BodyId Box2DUtils::create_physics_rect(const b2WorldId& world_id,
                                          const bool dynamic,
+                                         const bool rotation_locked,
                                          const sf::Vector2f& position,
                                          const sf::Vector2f& size) {
     b2BodyDef body_def = b2DefaultBodyDef();
@@ -82,6 +84,7 @@ b2BodyId Box2DUtils::create_physics_rect(const b2WorldId& world_id,
     // Is Dynamic(moving), or static(Stationary)
     body_def.type = dynamic ? b2_dynamicBody : b2_staticBody;
     body_def.position = sv2_to_bv2(position);
+    body_def.fixedRotation = rotation_locked;
 
     // Create the body
     b2BodyId body_id = b2CreateBody(world_id, &body_def);
@@ -100,14 +103,16 @@ b2BodyId Box2DUtils::create_physics_rect(const b2WorldId& world_id,
 // Create box2d rectangle with sfml rectangle
 b2BodyId Box2DUtils::create_physics_rect(const b2WorldId& world_id,
                                          const bool dynamic,
+                                           const bool rotation_locked,
                                          const sf::RectangleShape& rs) {
-    return create_physics_rect(world_id, dynamic, rs.getPosition(),
+    return create_physics_rect(world_id, dynamic, rotation_locked, rs.getPosition(),
                                rs.getSize());
 }
 
 // Create box2d circle
 b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
                                            const bool dynamic,
+                                           const bool rotation_locked,
                                            const sf::Vector2f& center_position,
                                            const float radius) {
     b2BodyDef body_def = b2DefaultBodyDef();
@@ -115,6 +120,7 @@ b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
     // Is Dynamic(moving), or static(Stationary)
     body_def.type = dynamic ? b2_dynamicBody : b2_staticBody;
     body_def.position = sv2_to_bv2(center_position);
+    body_def.fixedRotation = rotation_locked;
 
     // Create the body
     b2BodyId body_id = b2CreateBody(world_id, &body_def);
@@ -127,6 +133,7 @@ b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
     shape_def.material.restitution = GameParameters::default_restitution;
     b2Circle circle{{}, radius};
 
+    std::cout << center_position.x << " " << center_position.y << std::endl; 
     b2CreateCircleShape(body_id, &shape_def, &circle);
 
     return body_id;
@@ -135,7 +142,8 @@ b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
 // Create box2d circle with sfml circle
 b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
                                            const bool dynamic,
+                                           const bool rotation_locked,
                                            const sf::CircleShape& cs) {
-    return create_physics_circle(world_id, dynamic, cs.getPosition(),
+    return create_physics_circle(world_id, dynamic, rotation_locked, cs.getPosition(),
                                  cs.getRadius());
 }
