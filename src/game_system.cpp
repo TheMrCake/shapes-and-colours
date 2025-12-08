@@ -1,12 +1,14 @@
 #include "game_system.hpp"
 
 // STD includes
-#include <memory>
 #include <iostream>
+#include <memory>
 
 // Local includes
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/ConvexShape.hpp"
+#include "SFML/System/Vector2.hpp"
+#include "SFML/Window/Clipboard.hpp"
 #include "game_objects/components/physics_component.hpp"
 #include "game_objects/components/shape_component.hpp"
 #include "game_objects/components/sprite_component.hpp"
@@ -28,8 +30,8 @@ GameSystem::GameSystem()
       crystal_system(entity_manager),
       light_system(entity_manager),
       movement_system(entity_manager),
-      current_scene(
-          std::make_unique<StartMenuScene>(*this)),
+      transform_system(entity_manager),
+      current_scene(std::make_unique<StartMenuScene>(*this)),
       in_game(false),
       running(true) {
     std::cout << "GameSystem initialized" << std::endl;
@@ -37,17 +39,36 @@ GameSystem::GameSystem()
 
 void GameSystem::start_game() {
     EntityId player = entity_manager.make_entity<Player>();
+    transform_info player_transform = {
+        {GameParameters::game_width / 2.f, GameParameters::game_height / 2.f},
+        0.f};
 
-    if (auto player_physics_comp = entity_manager.get_entity_component<Physics>(player);
-        player_physics_comp.has_value()) {
-        player_physics_comp.value()->body_id = Box2DUtils::create_physics_circle(physics_system.get_world_id(), true, sf::CircleShape(2));
+    if (auto player_transform_comp =
+            entity_manager.get_entity_component<Transform>(player);
+        player_transform_comp.has_value()) {
+        player_transform_comp.value()->transform = player_transform;
     }
 
-    auto player_sprite_comp = entity_manager.get_entity_component<Sprite>(player);
+    sf::CircleShape player_collider{2};
+    player_collider.setPosition(player_transform.position.x,
+                                player_transform.position.y);
+    player_collider.setRotation(player_transform.rotation_deg);
+
+    if (auto player_physics_comp =
+            entity_manager.get_entity_component<Physics>(player);
+        player_physics_comp.has_value()) {
+        player_physics_comp.value()->body_id =
+            Box2DUtils::create_physics_circle(physics_system.get_world_id(),
+                                              true, true, player_collider);
+    }
+
+    auto player_sprite_comp =
+        entity_manager.get_entity_component<Sprite>(player);
 
     if (!player_sprite_comp.has_value()) {
         // Something has gone terribly wrong
-        std::cerr << "Failed to find player entity sprite component" << std::endl;
+        std::cerr << "Failed to find player entity sprite component"
+                  << std::endl;
     };
 
     sf::Texture bulb_texture{};
@@ -56,43 +77,64 @@ void GameSystem::start_game() {
         std::cerr << "Failed to load bulb image" << std::endl;
     }
 
-    player_sprite_comp.value()->resource_id = resource_manager.new_resource(bulb_texture);
+    player_sprite_comp.value()->resource_id =
+        resource_manager.new_resource(bulb_texture);
 
     sf::Sprite& player_sprite = player_sprite_comp.value()->sprite;
-    
+
     player_sprite.setTexture(bulb_texture);
     player_sprite.setOrigin(bulb_texture.getSize().x / 2.f,
-                         bulb_texture.getSize().y / 2.f);
-    player_sprite.setPosition(GameParameters::game_width / 2.f, GameParameters::game_height / 2.f);
+                            bulb_texture.getSize().y / 2.f);
+    player_sprite.setPosition(0.f, 0.f);
     player_sprite.setScale(0.15f, 0.15f);
-    
+
     // Setup crystal
 
     EntityId crystal = entity_manager.make_entity<LightCrystal>();
 
-    auto crystal_physics_comp = entity_manager.get_entity_component<Physics>(crystal);
-    crystal_physics_comp.value()->body_id = Box2DUtils::create_physics_circle(physics_system.get_world_id(), false, sf::CircleShape(2));
+    transform_info crystal_transform = {
+        {GameParameters::game_width / 3.f, GameParameters::game_height / 2.f},
+        0.f};
 
-    auto crystal_shape_comp = entity_manager.get_entity_component<Shape>(crystal);
+    if (auto crystal_transform_comp =
+            entity_manager.get_entity_component<Transform>(crystal);
+        crystal_transform_comp.has_value()) {
+        crystal_transform_comp.value()->transform = crystal_transform;
+    }
+
+    sf::CircleShape crystal_collider{2};
+    crystal_collider.setPosition(crystal_transform.position.x,
+                                crystal_transform.position.y);
+    crystal_collider.setRotation(crystal_transform.rotation_deg);
+
+    auto crystal_physics_comp =
+        entity_manager.get_entity_component<Physics>(crystal);
+    crystal_physics_comp.value()->body_id = Box2DUtils::create_physics_circle(
+        physics_system.get_world_id(), false, true, crystal_collider);
+
+    auto crystal_shape_comp =
+        entity_manager.get_entity_component<Shape>(crystal);
     crystal_shape_comp.value()->shape = std::make_unique<sf::ConvexShape>();
-    sf::ConvexShape& crystalShape = static_cast<sf::ConvexShape&>(*crystal_shape_comp.value()->shape);
+    sf::ConvexShape& crystal_shape =
+        static_cast<sf::ConvexShape&>(*crystal_shape_comp.value()->shape);
 
-    crystalShape.setPointCount(6);
-    crystalShape.setPoint(0, sf::Vector2f(0.f, -50.f));
-    crystalShape.setPoint(1, sf::Vector2f(30.f, -20.f));
-    crystalShape.setPoint(2, sf::Vector2f(30.f, 20.f));
-    crystalShape.setPoint(3, sf::Vector2f(0.f, 50.f));
-    crystalShape.setPoint(4, sf::Vector2f(-30.f, 20.f));
-    crystalShape.setPoint(5, sf::Vector2f(-30.f, -20.f));
+    crystal_shape.setPointCount(6);
+    crystal_shape.setPoint(0, sf::Vector2f(0.f, -50.f));
+    crystal_shape.setPoint(1, sf::Vector2f(30.f, -20.f));
+    crystal_shape.setPoint(2, sf::Vector2f(30.f, 20.f));
+    crystal_shape.setPoint(3, sf::Vector2f(0.f, 50.f));
+    crystal_shape.setPoint(4, sf::Vector2f(-30.f, 20.f));
+    crystal_shape.setPoint(5, sf::Vector2f(-30.f, -20.f));
 
-    crystalShape.setFillColor(sf::Color(101, 96, 98));
-    crystalShape.setOutlineColor(sf::Color(129, 121, 125));
-    crystalShape.setOutlineThickness(2.f);
-    crystalShape.setPosition(GameParameters::game_width / 3.f, GameParameters::game_height / 2.f);
+    crystal_shape.setFillColor(sf::Color(101, 96, 98));
+    crystal_shape.setOutlineColor(sf::Color(129, 121, 125));
+    crystal_shape.setOutlineThickness(2.f);
+    crystal_shape.setPosition(0.f, 0.f);
 
     // Create light beam
     // beamId =
-    //     create_light_ray(entity_manager, windowSize, sf::Vector2f(-1.f, 1.f));
+    //     create_light_ray(entity_manager, windowSize,
+    //     sf::Vector2f(-1.f, 1.f));
     // std::cout << "Light beam created with ID: " << beamId << "\n";
 
     // // Verify the light beam was created
@@ -103,7 +145,8 @@ void GameSystem::start_game() {
     // }
 
     // if (auto shapeOpt = entity_manager.get_entity_component<Shape>(beamId)) {
-    //     std::cout << "Shape component found, visible: " << (*shapeOpt)->visible
+    //     std::cout << "Shape component found, visible: " <<
+    //     (*shapeOpt)->visible
     //               << "\n";
     // } else {
     //     std::cout << "ERROR: Shape component NOT found!\n";
@@ -161,7 +204,6 @@ void GameSystem::update(const float dt) {
             // Now set the pause menu as current
             current_scene.reset(next);
         }
-
     }
 
     // Only update game systems when in game and not paused
@@ -173,6 +215,7 @@ void GameSystem::update(const float dt) {
         movement_system.update(dt);
         crystal_system.update(dt);
         light_system.update(dt);
+        transform_system.update(dt);
     }
 }
 

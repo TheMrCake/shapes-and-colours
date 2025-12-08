@@ -10,6 +10,7 @@
 #include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
 #include "systems/movement_system.hpp"
+#include "systems/transform_system.hpp"
 #include <memory>
 
 #include "systems/crystal_system.hpp"
@@ -27,6 +28,7 @@ public:
     void render(sf::RenderWindow& window);
 
     void handle_event(sf::Event event);
+
     bool running;
     bool in_game;
 
@@ -39,5 +41,6 @@ private:
     CrystalSystem crystal_system;
     LightSystem light_system;
     MovementSystem movement_system;
+    TransformSystem transform_system;
     std::unique_ptr<Scene> current_scene;
 };
