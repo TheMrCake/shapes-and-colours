@@ -23,6 +23,8 @@ public:
     Scene* nextScene() override;
 
 private:
+    void updateSelection();
+
     sf::Font m_font;
     sf::Text m_title;
     sf::Text m_resumeText;
@@ -37,13 +39,4 @@ private:
 
     GameSystem& game_system;
     GameScene* gameScene;
-    // PauseMenuScene(sf::Vector2u windowSize, EntityManager &em);
-
-    // void handleEvent(const sf::Event &event);
-
-    // void update(float);
-
-    // void render(sf::RenderWindow &window);
-
-    void updateSelection();
 };

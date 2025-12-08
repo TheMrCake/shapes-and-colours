@@ -88,6 +88,9 @@ public:
 
     void remove_entity(EntityId id) {
         // Remove from each component pool
+        // There's a way to do this for all types
+        // using the derived pools but
+        // I can't figure it out in time.
         remove_from_pool<Physics>(id);
         remove_from_pool<Input>(id);
         remove_from_pool<Light>(id);
