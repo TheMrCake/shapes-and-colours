@@ -4,13 +4,11 @@
 #include "box2d/id.h"
 #include "game_objects/entity.hpp"
 
-
-
 struct Physics : Component<Physics> {
-  Physics();
-  Physics(EntityId entity_id);
+    Physics();
+    Physics(EntityId entity_id);
 
-  void set_body_id(b2BodyId new_body_id);
+    void set_body_id(b2BodyId new_body_id);
 
-  b2BodyId body_id;
+    b2BodyId body_id;
 };

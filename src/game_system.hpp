@@ -17,27 +17,26 @@
 
 class GameSystem {
 public:
-  GameSystem(sf::Vector2u window_size);
-  ~GameSystem() = default;
+    GameSystem(sf::Vector2u window_size);
+    ~GameSystem() = default;
 
-  void init();
+    void init();
 
-  void update(const float dt);
+    void update(const float dt);
 
-  void render(sf::RenderWindow& window);
+    void render(sf::RenderWindow &window);
 
-  void handle_event(sf::Event event);
-  bool running;
-  bool in_game;
+    void handle_event(sf::Event event);
+    bool running;
+    bool in_game;
 
 private:
-  EntityManager entity_manager;
+    EntityManager entity_manager;
 
-  PhysicsSystem physics_system;
-  InputSystem input_system;
-  CrystalSystem crystal_system;
-  LightSystem light_system;
-  std::unique_ptr<Scene> current_scene;
-  std::unique_ptr<GameScene> saved_game_scene;
-
+    PhysicsSystem physics_system;
+    InputSystem input_system;
+    CrystalSystem crystal_system;
+    LightSystem light_system;
+    std::unique_ptr<Scene> current_scene;
+    std::unique_ptr<GameScene> saved_game_scene;
 };

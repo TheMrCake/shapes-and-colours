@@ -3,12 +3,12 @@
 //
 
 #pragma once
-#include "system.hpp"
 #include "managers/entity_manager.hpp"
+#include "system.hpp"
 
 class CrystalSystem : public System {
-    public:
-        explicit CrystalSystem(EntityManager& entity_manager);
+public:
+    explicit CrystalSystem(EntityManager &entity_manager);
 
-        void update(float delta_time) override;
+    void update(float delta_time) override;
 };

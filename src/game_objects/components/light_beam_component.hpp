@@ -7,7 +7,8 @@
 
 struct LightBeam : Component<LightBeam> {
     LightBeam() = default;
-    LightBeam(EntityId id) : Component<LightBeam>(id) {}
+    LightBeam(EntityId id)
+        : Component<LightBeam>(id) {}
 
     sf::Vector2f direction;
     sf::Vector2f targetDirection;

@@ -1,4 +1,4 @@
- #pragma once
+#pragma once
 
 // STD includes
 #include <memory>
@@ -7,12 +7,10 @@
 #include "SFML/Graphics/Shape.hpp"
 #include "game_objects/entity.hpp"
 
-
-
 struct Shape : Component<Shape> {
-  Shape();
-  Shape(EntityId entity_id);
+    Shape();
+    Shape(EntityId entity_id);
 
-  std::unique_ptr<sf::Shape> shape;
+    std::unique_ptr<sf::Shape> shape;
     bool visible = true;
 };

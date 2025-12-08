@@ -7,114 +7,113 @@
 #include <unordered_map>
 
 // Local includes
-#include "game_objects/components/physics_component.hpp"
+#include "game_objects/components/crystal_component.hpp"
 #include "game_objects/components/input_component.hpp"
+#include "game_objects/components/light_beam_component.hpp"
 #include "game_objects/components/light_component.hpp"
+#include "game_objects/components/physics_component.hpp"
 #include "game_objects/components/shape_component.hpp"
 #include "game_objects/components/sprite_component.hpp"
 #include "game_objects/components/transform_component.hpp"
-#include "game_objects/components/crystal_component.hpp"
 #include "game_objects/entity.hpp"
-#include "game_objects/components/light_beam_component.hpp"
 
-template<typename ComponentType>
+template <typename ComponentType>
 using ComponentPtr = std::unique_ptr<ComponentType>;
 
-template<typename ComponentType>
-using ComponentWeakPtr = ComponentType*;
+template <typename ComponentType>
+using ComponentWeakPtr = ComponentType *;
 
-template<typename ComponentType, typename = std::enable_if<is_component_v<ComponentType>>>
+template <typename ComponentType,
+          typename = std::enable_if<is_component_v<ComponentType>>>
 using ComponentMap = std::unordered_map<EntityId, ComponentPtr<ComponentType>>;
 
 // Pool components for easy access
-template<typename ComponentType>
+template <typename ComponentType>
 struct ComponentPool {
-  ComponentMap<ComponentType> components;
+    ComponentMap<ComponentType> components;
 };
 
-template<typename... Components>
+template <typename... Components>
 struct ComponentStorage : ComponentPool<Components>... {};
 
-
 // When making new components also put their name here in alphabetical order
-using AllComponentStorages = ComponentStorage<
-  Physics,
-  Input,
-  Light,
-  Shape,
-  Sprite,
-  Transform,
-  Crystal,
-  LightBeam
->;
+using AllComponentStorages =
+    ComponentStorage<Physics, Input, Light, Shape, Sprite, Transform, Crystal,
+                     LightBeam>;
 
 class EntityManager : AllComponentStorages {
 public:
-  EntityManager();
+    EntityManager();
 
-  // Non-copyable
-  EntityManager(const EntityManager&) = delete;
-  EntityManager& operator=(const EntityManager&) = delete;
+    // Non-copyable
+    EntityManager(const EntityManager &) = delete;
+    EntityManager &operator=(const EntityManager &) = delete;
 
-  // Movable
-  EntityManager(EntityManager&&) = default;
-  EntityManager& operator=(EntityManager&&) = default;
+    // Movable
+    EntityManager(EntityManager &&) = default;
+    EntityManager &operator=(EntityManager &&) = default;
 
-  // Return all components of a specific type
-  template<typename ComponentType>
-  ComponentMap<ComponentType>& get_component_map() {
-    return static_cast<ComponentPool<ComponentType>*>(this)->components;
-  }
-
-  template<typename ComponentType>
-  std::optional<ComponentWeakPtr<ComponentType>> get_entity_component(EntityId entity_id) {
-    ComponentMap<ComponentType>& component_map = static_cast<ComponentPool<ComponentType>*>(this)->components;
-    if (auto it = component_map.find(entity_id); it != component_map.end()) {
-      return it->second.get();
+    // Return all components of a specific type
+    template <typename ComponentType>
+    ComponentMap<ComponentType> &get_component_map() {
+        return static_cast<ComponentPool<ComponentType> *>(this)->components;
     }
-    return std::nullopt;
-  }
 
-  template<typename E, typename = std::enable_if<is_entity_v<E>>>
-  EntityId make_entity() {
-    EntityId current_id = next_id;
-    next_id++;
+    template <typename ComponentType>
+    std::optional<ComponentWeakPtr<ComponentType>>
+    get_entity_component(EntityId entity_id) {
+        ComponentMap<ComponentType> &component_map =
+            static_cast<ComponentPool<ComponentType> *>(this)->components;
+        if (auto it = component_map.find(entity_id);
+            it != component_map.end()) {
+            return it->second.get();
+        }
+        return std::nullopt;
+    }
 
-    std::apply([this, current_id](auto... component){
-      this->add_components_to_pool<std::decay_t<decltype(component)>...>(current_id);
-    }, typename E::component_types{});
+    template <typename E, typename = std::enable_if<is_entity_v<E>>>
+    EntityId make_entity() {
+        EntityId current_id = next_id;
+        next_id++;
 
-    return current_id;
-  };
+        std::apply(
+            [this, current_id](auto... component) {
+                this->add_components_to_pool<
+                    std::decay_t<decltype(component)>...>(current_id);
+            },
+            typename E::component_types{});
 
-  void remove_entity(EntityId id) {
-    // Remove from each component pool
-    remove_from_pool<Physics>(id);
-    remove_from_pool<Input>(id);
-    remove_from_pool<Light>(id);
-    remove_from_pool<Shape>(id);
-    remove_from_pool<Sprite>(id);
-    remove_from_pool<Transform>(id);
-    remove_from_pool<Crystal>(id);
-    remove_from_pool<LightBeam>(id);
-  }
+        return current_id;
+    };
+
+    void remove_entity(EntityId id) {
+        // Remove from each component pool
+        remove_from_pool<Physics>(id);
+        remove_from_pool<Input>(id);
+        remove_from_pool<Light>(id);
+        remove_from_pool<Shape>(id);
+        remove_from_pool<Sprite>(id);
+        remove_from_pool<Transform>(id);
+        remove_from_pool<Crystal>(id);
+        remove_from_pool<LightBeam>(id);
+    }
+
 private:
+    template <typename... ComponentTypes>
+    void add_components_to_pool(EntityId id) {
+        (add_single_component_to_pool<ComponentTypes>(id), ...);
+    }
 
-  template<typename... ComponentTypes>
-  void add_components_to_pool(EntityId id) {
-    (add_single_component_to_pool<ComponentTypes>(id), ...);
-  }
+    template <typename ComponentType>
+    void add_single_component_to_pool(EntityId id) {
+        ComponentMap<ComponentType> &map = get_component_map<ComponentType>();
+        map.emplace(id, std::make_unique<ComponentType>(id));
+    }
 
-  template<typename ComponentType>
-  void add_single_component_to_pool(EntityId id) {
-    ComponentMap<ComponentType>& map = get_component_map<ComponentType>();
-    map.emplace(id, std::make_unique<ComponentType>(id));
-  }
-
-  template<typename ComponentType>
+    template <typename ComponentType>
     void remove_from_pool(EntityId id) {
-    auto& map = get_component_map<ComponentType>();
-    map.erase(id);
-  }
-  EntityId next_id;
+        auto &map = get_component_map<ComponentType>();
+        map.erase(id);
+    }
+    EntityId next_id;
 };

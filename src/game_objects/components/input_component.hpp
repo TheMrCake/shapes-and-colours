@@ -6,12 +6,10 @@
 // Local includes
 #include "game_objects/entity.hpp"
 
-
-
 struct Input : Component<Input> {
-  Input();
-  Input(EntityId entity_id);
+    Input();
+    Input(EntityId entity_id);
 
-  sf::Vector2f input_direction;
-  bool possess_pressed;
+    sf::Vector2f input_direction;
+    bool possess_pressed;
 };

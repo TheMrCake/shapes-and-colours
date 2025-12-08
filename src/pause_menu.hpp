@@ -11,14 +11,13 @@
 
 class PauseMenuScene : public Scene {
 public:
-    PauseMenuScene(sf::Vector2u windowSize, EntityManager& em, GameScene* gameScene);
+    PauseMenuScene(sf::Vector2u windowSize, EntityManager &em,
+                   GameScene *gameScene);
 
-
-
-    void handleEvent(const sf::Event& event) override;
+    void handleEvent(const sf::Event &event) override;
     void update(float dt) override;
-    void render(sf::RenderWindow& window) override;
-    Scene* nextScene() override;
+    void render(sf::RenderWindow &window) override;
+    Scene *nextScene() override;
 
 private:
     sf::Font m_font;
@@ -30,20 +29,18 @@ private:
     bool m_resumeSelected;
     bool m_quitSelected;
 
-    Scene* m_next;
+    Scene *m_next;
     sf::Vector2u windowSize;
 
-    EntityManager& entityManager;
-    GameScene* gameScene;
-    //PauseMenuScene(sf::Vector2u windowSize, EntityManager &em);
+    EntityManager &entityManager;
+    GameScene *gameScene;
+    // PauseMenuScene(sf::Vector2u windowSize, EntityManager &em);
 
-    //void handleEvent(const sf::Event &event);
+    // void handleEvent(const sf::Event &event);
 
-    //void update(float);
+    // void update(float);
 
-    //void render(sf::RenderWindow &window);
+    // void render(sf::RenderWindow &window);
 
     void updateSelection();
 };
-
-

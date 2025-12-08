@@ -4,12 +4,10 @@
 #include "game_objects/entity.hpp"
 
 Transform::Transform()
-  : Component<Transform>(INVALID_ENTITY_ID)
-  {}
+    : Component<Transform>(INVALID_ENTITY_ID) {}
 
 Transform::Transform(EntityId entity_id)
-  : Component<Transform>(entity_id)
-  {}
+    : Component<Transform>(entity_id) {}
 
 // void Transform::add_transform(transform_info new_transform) {
 //   transforms_to_apply.push_back(new_transform);

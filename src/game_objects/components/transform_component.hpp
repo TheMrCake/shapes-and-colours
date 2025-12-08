@@ -5,16 +5,15 @@
 #include "utils/b2d_utils.hpp"
 
 struct Transform : Component<Transform> {
-  Transform();
-  Transform(EntityId entit_id);
+    Transform();
+    Transform(EntityId entit_id);
 
-// private:
-//   void update_impl(const float delta_time);
+    // private:
+    //   void update_impl(const float delta_time);
 
-//   void apply_transforms();
+    //   void apply_transforms();
 
-//   std::vector<transform_info> transforms_to_apply;
+    //   std::vector<transform_info> transforms_to_apply;
 
-  transform_info transform;
+    transform_info transform;
 };
-

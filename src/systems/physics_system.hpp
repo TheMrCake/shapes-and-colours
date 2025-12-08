@@ -7,14 +7,12 @@
 #include "managers/entity_manager.hpp"
 #include "systems/system.hpp"
 
-
-
 class PhysicsSystem : System {
 public:
-  PhysicsSystem(EntityManager& entity_manager);
+    PhysicsSystem(EntityManager &entity_manager);
 
-  virtual void update(const float delta_time) override;
+    virtual void update(const float delta_time) override;
 
 private:
-  b2WorldId world_id;
+    b2WorldId world_id;
 };

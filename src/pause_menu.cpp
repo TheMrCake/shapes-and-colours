@@ -4,14 +4,19 @@
 
 #include "pause_menu.hpp"
 #include "game_scene.hpp"
-#include <iostream>
 #include "managers/entity_manager.hpp"
 #include "start_menu_scene.hpp"
+#include <iostream>
 
-PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager& em, GameScene* gameScene)
-    : m_selectedIndex(0), m_resumeSelected(false), m_quitSelected(false),
-      m_next(this), windowSize(windowSize), entityManager(em), gameScene(gameScene)
-{
+PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager &em,
+                               GameScene *gameScene)
+    : m_selectedIndex(0),
+      m_resumeSelected(false),
+      m_quitSelected(false),
+      m_next(this),
+      windowSize(windowSize),
+      entityManager(em),
+      gameScene(gameScene) {
     // Load font
     if (!m_font.loadFromFile("resources/ScienceGothic.ttf")) {
         std::cerr << "Failed to load font\n";
@@ -47,21 +52,23 @@ PauseMenuScene::PauseMenuScene(sf::Vector2u windowSize, EntityManager& em, GameS
     std::cout << "PauseMenuScene created\n";
 }
 
-void PauseMenuScene::handleEvent(const sf::Event& event) {
+void PauseMenuScene::handleEvent(const sf::Event &event) {
     std::cout << "PauseMenu handleEvent called, type: " << event.type << "\n";
 
     if (event.type == sf::Event::KeyPressed) {
         std::cout << "Key pressed: " << event.key.code << "\n";
 
         // Navigate menu
-        if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Down) {
+        if (event.key.code == sf::Keyboard::Up ||
+            event.key.code == sf::Keyboard::Down) {
             m_selectedIndex = 1 - m_selectedIndex;
             updateSelection();
             std::cout << "Selection changed to: " << m_selectedIndex << "\n";
         }
         // Select option
         else if (event.key.code == sf::Keyboard::Return) {
-            std::cout << "Return pressed, selected index: " << m_selectedIndex << "\n";
+            std::cout << "Return pressed, selected index: " << m_selectedIndex
+                      << "\n";
             if (m_selectedIndex == 0) {
                 m_resumeSelected = true;
                 std::cout << "Resume selected!\n";
@@ -88,7 +95,7 @@ void PauseMenuScene::update(float dt) {
     }
 }
 
-void PauseMenuScene::render(sf::RenderWindow& window) {
+void PauseMenuScene::render(sf::RenderWindow &window) {
     // Draw the game scene in the background (frozen)
     if (gameScene) {
         gameScene->render(window);
@@ -105,7 +112,7 @@ void PauseMenuScene::render(sf::RenderWindow& window) {
     window.draw(m_quitText);
 }
 
-Scene* PauseMenuScene::nextScene() {
+Scene *PauseMenuScene::nextScene() {
     std::cout << "nextScene called - resumeSelected: " << m_resumeSelected
               << ", quitSelected: " << m_quitSelected << "\n";
 
@@ -122,9 +129,9 @@ Scene* PauseMenuScene::nextScene() {
         std::cout << "Quitting to menu!\n";
         m_quitSelected = false;
 
-        auto& lights = entityManager.get_component_map<Light>();
+        auto &lights = entityManager.get_component_map<Light>();
         std::vector<EntityId> entitiesToRemove;
-        for (auto& [id, lightPtr] : lights) {
+        for (auto &[id, lightPtr] : lights) {
             entitiesToRemove.push_back(id);
         }
         for (EntityId id : entitiesToRemove) {

@@ -8,29 +8,29 @@
 #include "game_objects/components/shape_component.hpp"
 #include "game_objects/components/sprite_component.hpp"
 #include "game_objects/entities.hpp"
+#include "game_scene.hpp"
 #include "managers/entity_manager.hpp"
+#include "pause_menu.hpp"
 #include "start_menu_scene.hpp"
 #include "systems/input_system.hpp"
 #include "systems/physics_system.hpp"
-#include "game_scene.hpp"
-#include "pause_menu.hpp"
 
 GameSystem::GameSystem(sf::Vector2u window_size)
-  : entity_manager()
-  , physics_system(entity_manager)
-  , input_system(entity_manager)
-  , crystal_system(entity_manager)
-  , light_system(entity_manager)
-  , current_scene(std::make_unique<StartMenuScene>(window_size, entity_manager))
-  , saved_game_scene(nullptr)
-  ,in_game(false)
-  , running(true) {
-  std::cout << "GameSystem initialized\n";
-
+    : entity_manager(),
+      physics_system(entity_manager),
+      input_system(entity_manager),
+      crystal_system(entity_manager),
+      light_system(entity_manager),
+      current_scene(
+          std::make_unique<StartMenuScene>(window_size, entity_manager)),
+      saved_game_scene(nullptr),
+      in_game(false),
+      running(true) {
+    std::cout << "GameSystem initialized\n";
 }
 
 void GameSystem::init() {
-  // entity_manager.make_entity<LightRay>();
+    // entity_manager.make_entity<LightRay>();
 }
 
 void GameSystem::update(const float dt) {
@@ -45,7 +45,7 @@ void GameSystem::update(const float dt) {
     current_scene->update(dt);
 
     // Check for scene transitions
-    Scene* next = current_scene->nextScene();
+    Scene *next = current_scene->nextScene();
     if (next != current_scene.get()) {
         std::cout << "Scene transition detected\n";
 
@@ -57,7 +57,7 @@ void GameSystem::update(const float dt) {
         }
 
         // Check what type of scene we're transitioning to
-        if (GameScene* gameScene = dynamic_cast<GameScene*>(next)) {
+        if (GameScene *gameScene = dynamic_cast<GameScene *>(next)) {
             std::cout << "Transitioning to GameScene\n";
             in_game = true;
 
@@ -71,18 +71,20 @@ void GameSystem::update(const float dt) {
                 std::cout << "New GameScene created\n";
                 current_scene.reset(gameScene);
             }
-        } else if (dynamic_cast<StartMenuScene*>(next)) {
+        } else if (dynamic_cast<StartMenuScene *>(next)) {
             std::cout << "Transitioning to StartMenuScene\n";
             in_game = false;
             saved_game_scene.reset(); // Clear saved game when returning to menu
             current_scene.reset(next);
-        } else if (dynamic_cast<PauseMenuScene*>(next)) {
+        } else if (dynamic_cast<PauseMenuScene *>(next)) {
             std::cout << "Transitioning to PauseMenuScene\n";
             // Save the current GameScene before switching to pause menu
-            if (GameScene* gameScene = dynamic_cast<GameScene*>(current_scene.get())) {
+            if (GameScene *gameScene =
+                    dynamic_cast<GameScene *>(current_scene.get())) {
                 std::cout << "Saving GameScene\n";
                 // Move current_scene to saved_game_scene
-                saved_game_scene.reset(dynamic_cast<GameScene*>(current_scene.release()));
+                saved_game_scene.reset(
+                    dynamic_cast<GameScene *>(current_scene.release()));
             }
             // Now set the pause menu as current
             current_scene.reset(next);
@@ -90,7 +92,7 @@ void GameSystem::update(const float dt) {
     }
 
     // Only update game systems when in game and not paused
-    GameScene* gameScene = dynamic_cast<GameScene*>(current_scene.get());
+    GameScene *gameScene = dynamic_cast<GameScene *>(current_scene.get());
     if (!gameScene && saved_game_scene) {
         // If we're in pause menu, check the saved game scene
         gameScene = saved_game_scene.get();
@@ -104,20 +106,21 @@ void GameSystem::update(const float dt) {
     }
 }
 
-
-void GameSystem::render(sf::RenderWindow& window) {
-    if (!current_scene) return;
+void GameSystem::render(sf::RenderWindow &window) {
+    if (!current_scene)
+        return;
 
     // Render current scene
     current_scene->render(window);
 
     // Render all sprites
-    for (auto&& [e_id, component] : entity_manager.get_component_map<Sprite>()) {
+    for (auto &&[e_id, component] :
+         entity_manager.get_component_map<Sprite>()) {
         window.draw(component->sprite);
     }
 
     // Render all shapes
-    for (auto&& [e_id, component] : entity_manager.get_component_map<Shape>()) {
+    for (auto &&[e_id, component] : entity_manager.get_component_map<Shape>()) {
         if (component->shape) {
             window.draw(*component->shape);
         }
@@ -125,7 +128,8 @@ void GameSystem::render(sf::RenderWindow& window) {
 }
 
 void GameSystem::handle_event(sf::Event event) {
-    if (!current_scene) return;
+    if (!current_scene)
+        return;
 
     std::cout << "GameSystem handle_event, type: " << event.type << "\n";
 
