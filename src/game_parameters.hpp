@@ -9,7 +9,7 @@ struct GameParameters {
     constexpr static int max_emitted_rays = 100;
 
     constexpr static float physics_scale = 30.f;
-    constexpr static float physics_scale_inv = 1.f / 30.f;
+    constexpr static float physics_scale_inv = 1.f / physics_scale;
 
     constexpr static int physics_sub_step_count = 4;
     constexpr static float physics_time_step = 1.f / 60.f;
