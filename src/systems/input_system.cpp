@@ -8,7 +8,6 @@
 // Local includes
 #include "game_objects/components/input_component.hpp"
 #include "utils/b2d_utils.hpp"
-#include <iostream>
 
 InputSystem::InputSystem(EntityManager& entity_manager)
     : System(entity_manager) {}
@@ -30,10 +29,10 @@ void InputSystem::update(const float delta_time) {
 
         // Vertical Input
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            input_vec.y++;
+            input_vec.y--;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            input_vec.y--;
+            input_vec.y++;
         }
 
         input_component->input_direction =
