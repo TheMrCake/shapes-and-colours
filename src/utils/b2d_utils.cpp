@@ -2,7 +2,6 @@
 
 // STD includes
 #include <cmath>
-#include <type_traits>
 
 // Box2d includes
 #include "box2d/box2d.h"
@@ -72,7 +71,7 @@ const sf::Vector2f Box2DUtils::normalize(const sf::Vector2f& in) {
 }
 
 // Create box2d rectangle
-b2BodyId Box2DUtils::create_physics_rect(b2WorldId& world_id,
+b2BodyId Box2DUtils::create_physics_rect(const b2WorldId& world_id,
                                          const bool dynamic,
                                          const sf::Vector2f& position,
                                          const sf::Vector2f& size) {
@@ -97,7 +96,7 @@ b2BodyId Box2DUtils::create_physics_rect(b2WorldId& world_id,
 }
 
 // Create box2d rectangle with sfml rectangle
-b2BodyId Box2DUtils::create_physics_rect(b2WorldId& world_id,
+b2BodyId Box2DUtils::create_physics_rect(const b2WorldId& world_id,
                                          const bool dynamic,
                                          const sf::RectangleShape& rs) {
     return create_physics_rect(world_id, dynamic, rs.getPosition(),
@@ -105,7 +104,7 @@ b2BodyId Box2DUtils::create_physics_rect(b2WorldId& world_id,
 }
 
 // Create box2d circle
-b2BodyId Box2DUtils::create_physics_circle(b2WorldId& world_id,
+b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
                                            const bool dynamic,
                                            const sf::Vector2f& center_position,
                                            const float radius) {
@@ -132,7 +131,7 @@ b2BodyId Box2DUtils::create_physics_circle(b2WorldId& world_id,
 }
 
 // Create box2d circle with sfml circle
-b2BodyId Box2DUtils::create_physics_circle(b2WorldId& world_id,
+b2BodyId Box2DUtils::create_physics_circle(const b2WorldId& world_id,
                                            const bool dynamic,
                                            const sf::CircleShape& cs) {
     return create_physics_circle(world_id, dynamic, cs.getPosition(),

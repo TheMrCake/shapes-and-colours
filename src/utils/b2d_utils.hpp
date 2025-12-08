@@ -1,8 +1,5 @@
 #pragma once
 
-// STD includes
-#include <memory>
-
 // SFML includes
 #include "SFML/Graphics/CircleShape.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
@@ -46,16 +43,16 @@ namespace Box2DUtils {
     const sf::Vector2f normalize(const sf::Vector2f& in);
 
     // Create a Box2D rectangle body
-    b2BodyId create_physics_rect(b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_rect(const b2WorldId& world_id, const bool dynamic,
                                  const sf::Vector2f& position,
                                  const sf::Vector2f& size);
-    b2BodyId create_physics_rect(b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_rect(const b2WorldId& world_id, const bool dynamic,
                                  const sf::RectangleShape& rs);
 
     // Create a Box2D circle body
-    b2BodyId create_physics_circle(b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_circle(const b2WorldId& world_id, const bool dynamic,
                                    const sf::Vector2f& position,
                                    const float radius);
-    b2BodyId create_physics_circle(b2WorldId& world_id, const bool dynamic,
+    b2BodyId create_physics_circle(const b2WorldId& world_id, const bool dynamic,
                                    const sf::CircleShape& rs);
 } // namespace Box2DUtils
