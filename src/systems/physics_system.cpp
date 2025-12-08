@@ -45,3 +45,7 @@ void PhysicsSystem::update(const float delta_time) {
         }
     }
 }
+
+const b2WorldId PhysicsSystem::get_world_id() {
+    return world_id;
+}

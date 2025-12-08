@@ -13,6 +13,7 @@ public:
 
     virtual void update(const float delta_time) override;
 
+    const b2WorldId get_world_id();
 private:
     b2WorldId world_id;
 };
