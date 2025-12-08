@@ -1,0 +1,11 @@
+IndentWidth: 4
+TabWidth: 4
+
+IndentAccessModifiers: false
+AccessModifierOffset: -4
+
+AlwaysBreakTemplateDeclarations: true
+
+NamespaceIndentation: All
+
+PackConstructorInitializers: Never

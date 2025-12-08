@@ -38,4 +38,3 @@
 build/*
 .cache/
 .idea/
-.clang-format
