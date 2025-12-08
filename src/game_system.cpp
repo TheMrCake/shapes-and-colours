@@ -27,6 +27,7 @@ GameSystem::GameSystem()
       input_system(entity_manager),
       crystal_system(entity_manager),
       light_system(entity_manager),
+      movement_system(entity_manager),
       current_scene(
           std::make_unique<StartMenuScene>(*this)),
       in_game(false),
@@ -167,6 +168,7 @@ void GameSystem::update(const float dt) {
     if (in_game) {
         physics_system.update(dt);
         input_system.update(dt);
+        movement_system.update(dt);
         crystal_system.update(dt);
         light_system.update(dt);
     }
@@ -175,9 +177,6 @@ void GameSystem::update(const float dt) {
 void GameSystem::render(sf::RenderWindow& window) {
     if (!current_scene)
         return;
-
-    // Render current scene
-    current_scene->render(window);
 
     // Render all sprites
     for (auto&& [e_id, component] :
@@ -191,6 +190,9 @@ void GameSystem::render(sf::RenderWindow& window) {
             window.draw(*component->shape);
         }
     }
+
+    // Render current scene
+    current_scene->render(window);
 }
 
 void GameSystem::handle_event(sf::Event event) {
