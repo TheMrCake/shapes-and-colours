@@ -21,6 +21,7 @@ add_executable(
   systems/input_system.cpp
   systems/light_system.cpp
   systems/crystal_system.cpp
+  systems/transform_system.cpp
   # Managers
   managers/entity_manager.cpp
   managers/resource_manager.cpp
