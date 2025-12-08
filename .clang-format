@@ -9,3 +9,5 @@ AlwaysBreakTemplateDeclarations: true
 NamespaceIndentation: All
 
 PackConstructorInitializers: Never
+
+PointerAlignment: Left
