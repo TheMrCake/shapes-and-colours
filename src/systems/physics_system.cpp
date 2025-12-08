@@ -28,8 +28,6 @@ void PhysicsSystem::update(const float delta_time) {
 
     ComponentMap<Physics>& physics_component_map =
         entity_manager.get_component_map<Physics>();
-    ComponentMap<Transform>& transform_component_map =
-        entity_manager.get_component_map<Transform>();
 
     for (auto& [entity_id, physics_component] : physics_component_map) {
         if (auto component_option =
